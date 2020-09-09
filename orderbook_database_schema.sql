@@ -19,13 +19,12 @@ USE `orderbook` ;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `orderbook`.`order` (
   `orderId` INT NOT NULL AUTO_INCREMENT,
-  `size` INT NOT NULL,
-  `side` TINYINT NOT NULL,
-  `partyId` INT NOT NULL,
-  `time` DATETIME NOT NULL,
-  `active` TINYINT NOT NULL DEFAULT 1,
-  `offerPrice` DECIMAL(8,2) NOT NULL,
-  `symbol` VARCHAR(45) NOT NULL,
+  `size` INT NOT NULL COMMENT 'Number of stocks for order',
+  `side` TINYINT NOT NULL COMMENT 'Whether order is a buy or sell',
+  `time` DATETIME NOT NULL COMMENT 'Time of order placement',
+  `active` TINYINT NOT NULL DEFAULT 1 COMMENT 'Whether order is active',
+  `offerPrice` DECIMAL(8,2) NOT NULL COMMENT 'Price for oder',
+  `symbol` VARCHAR(45) NOT NULL COMMENT 'Symbol of stock in order',
   PRIMARY KEY (`orderId`))
 ENGINE = InnoDB;
 
@@ -35,12 +34,12 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `orderbook`.`transaction` (
   `transactionId` INT NOT NULL AUTO_INCREMENT,
-  `buyOrderId` INT NOT NULL,
-  `sellOrderId` INT NOT NULL,
-  `time` DATETIME NOT NULL,
-  `finalPrice` DECIMAL(8,2) NOT NULL,
-  `finalAmount` INT NOT NULL,
-  `finalSymbol` VARCHAR(45) NOT NULL,
+  `buyOrderId` INT NOT NULL COMMENT 'Id for buy order',
+  `sellOrderId` INT NOT NULL COMMENT 'Id for sell order',
+  `finalTime` DATETIME NOT NULL COMMENT 'Time transaction occurs',
+  `finalPrice` DECIMAL(8,2) NOT NULL COMMENT 'final price of transaction',
+  `amount` INT NOT NULL COMMENT 'amount of stocks traded during transaction',
+  `finalSymbol` VARCHAR(45) NOT NULL COMMENT 'symbol of stock being traded during transaction',
   INDEX `fk_order_has_order_order1_idx` (`sellOrderId` ASC) VISIBLE,
   INDEX `fk_order_has_order_order_idx` (`buyOrderId` ASC) VISIBLE,
   PRIMARY KEY (`transactionId`),
