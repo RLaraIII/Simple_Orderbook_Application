@@ -6,7 +6,9 @@
 package com.sg.orderbook.repositories;
 
 import com.sg.orderbook.entities.Order;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Repository;
  * @author Minul
  */
 @Repository
-public interface OrderRepository extends JpaRepository<Order, Integer>{
-    
+public interface OrderRepository extends JpaRepository<Order, Integer> {
+    @Query("SELECT * FROM order WHERE active = 1")
+    List findAllBySide();
 }

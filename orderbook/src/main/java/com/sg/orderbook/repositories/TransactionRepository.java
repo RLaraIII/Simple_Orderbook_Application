@@ -6,7 +6,9 @@
 package com.sg.orderbook.repositories;
 
 import com.sg.orderbook.entities.Transaction;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -15,5 +17,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Integer>{
-    
+    @Query("SELECT * FROM transaction WHERE symbol = ?")
+    List findAllTransactionsForSymbol(String symbol);
 }
