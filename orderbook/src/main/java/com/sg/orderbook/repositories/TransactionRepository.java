@@ -17,6 +17,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Integer>{
-    @Query("SELECT * FROM transaction WHERE symbol = ?")
-    List findAllTransactionsForSymbol(String symbol);
+//    @Query("SELECT * FROM transaction WHERE symbol = ?")
+//    List findAllTransactionsForSymbol(String symbol);
 }
