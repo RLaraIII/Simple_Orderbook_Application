@@ -32,7 +32,7 @@ public class ServiceLayerImpl implements ServiceLayer{
 
     @Override
     public List<Order> getAllActiveOrders() {
-        return orders.findAllBySide();
+        return orders.findAllBuyOrders();
     }
 
     @Override
@@ -41,7 +41,7 @@ public class ServiceLayerImpl implements ServiceLayer{
     }
 
     @Override
-    public List<Transaction> getAllTransactionsForSymbol() {
+    public List<Transaction> getAllTransactionsForSymbol(String symbol) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

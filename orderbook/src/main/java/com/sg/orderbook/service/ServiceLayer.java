@@ -21,7 +21,7 @@ public interface ServiceLayer {
     
     public List<Transaction> getAllTransactions();
     
-    public List<Transaction> getAllTransactionsForSymbol();
+    public List<Transaction> getAllTransactionsForSymbol(String symbol);
     
     public void deleteOrder(Order order);
     

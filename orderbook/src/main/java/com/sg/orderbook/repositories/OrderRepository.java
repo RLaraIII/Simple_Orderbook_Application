@@ -18,5 +18,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Integer> {
     @Query("SELECT * FROM order WHERE active = 1")
-    List findAllBySide();
+    List findAllBuyOrders();
+    
+    @Query("SELECT * FROM order WHERE active = 0")
+    List findAllSellOrders();
 }
