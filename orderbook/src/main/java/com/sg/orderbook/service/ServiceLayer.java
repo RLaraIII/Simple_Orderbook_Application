@@ -6,6 +6,8 @@
 package com.sg.orderbook.service;
 
 import org.springframework.stereotype.Component;
+import com.sg.orderbook.entities.*;
+import java.util.List;
 
 /**
  *
@@ -13,5 +15,17 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public interface ServiceLayer {
+    public List<Order> getAllOrders();
     
+    public List<Order> getAllActiveOrders();
+    
+    public List<Transaction> getAllTransactions();
+    
+    public List<Transaction> getAllTransactionsForSymbol();
+    
+    public void deleteOrder(Order order);
+    
+    public void makeTransaction(Order buyOrder, Order sellOrder);
+    
+    public boolean matchOrders(Order buyOrder, Order sellOrder);
 }
