@@ -1,2 +1,3 @@
 orderbook/src/main/resources/application.properties
+orderbook/src/test/resources/application.properties
 /orderbook/nbproject/
