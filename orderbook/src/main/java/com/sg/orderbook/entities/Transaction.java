@@ -30,16 +30,16 @@ public class Transaction {
     @Column(name = "transactionid")
     private int id;
     
-    @Column
+    @Column(name = "finaltime")
     private LocalDateTime finalTime;
     
-    @Column
+    @Column(name = "finalprice")
     private BigDecimal finalPrice;
     
     @Column
     private int amount;
     
-    @Column
+    @Column(name = "finalsymbol")
     private String finalSymbol;
     
     @ManyToOne

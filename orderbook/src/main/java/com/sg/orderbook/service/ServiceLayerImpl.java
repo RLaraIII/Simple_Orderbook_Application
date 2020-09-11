@@ -20,14 +20,14 @@ import org.springframework.stereotype.Service;
  * @author Minul
  */
 @Service
-public class ServiceLayerImpl implements ServiceLayer{
+public class ServiceLayerImpl implements ServiceLayer {
 
     @Autowired
     OrderRepository orders;
-    
+
     @Autowired
     TransactionRepository transactions;
-    
+
     @Override
     public List<Order> getAllBuyOrders() {
         return orders.findAllBuyOrders();
@@ -37,7 +37,7 @@ public class ServiceLayerImpl implements ServiceLayer{
     public List<Order> getAllSellOrders() {
         return orders.findAllSellOrders();
     }
-    
+
     // get list of transactions stored in transaction database table
     @Override
     public List<Transaction> getAllTransactions() {
@@ -50,7 +50,7 @@ public class ServiceLayerImpl implements ServiceLayer{
     public List<Transaction> getAllTransactionsForSymbol(String symbol) {
         // pull all transactions from database
         List<Transaction> allTransactions = getAllTransactions();
-        
+
         // Loop through all transaction and only add it to the returned list if the symbol field equals the given symbol
         List<Transaction> transactionsForSymbol = new ArrayList<>();
         for (Transaction transaction : allTransactions) {
@@ -60,24 +60,24 @@ public class ServiceLayerImpl implements ServiceLayer{
         }
         return transactionsForSymbol;
     }
-    
+
     // Create new transaction and save it to transaction database table; pull info from buy order
     @Override
     public Transaction makeTransaction(Order buyOrder, Order sellOrder) {
         // Create the time field for the new transaction w/ format that sql can handle
         LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
-        String formattedDateTime = now.format(formatter);
-        
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+//        String formattedDateTime = now.format(formatter);
+
         // Create and fill a new transaction
         Transaction newTransaction = new Transaction();
         newTransaction.setBuyOrder(buyOrder);
         newTransaction.setSellOrder(sellOrder);
         newTransaction.setFinalSymbol(buyOrder.getSymbol());
         newTransaction.setFinalPrice(buyOrder.getOfferPrice());
-        newTransaction.setFinalTime(LocalDateTime.parse(formattedDateTime));
+        newTransaction.setFinalTime(now);
         
-        boolean buySizeBigger = buyOrder.getSize() > sellOrder.getSize();
+        boolean buySizeBigger = buyOrder.getSize() >= sellOrder.getSize();
         
         newTransaction.setAmount(buySizeBigger ? buyOrder.getSize() - sellOrder.getSize()
                 : sellOrder.getSize() - buyOrder.getSize());
@@ -92,11 +92,15 @@ public class ServiceLayerImpl implements ServiceLayer{
         return newTransaction;
     }
     
+//    // Compare the buy and sell order offer prices; if buy order price is greater than or equal to the sell order price, returns true (vlid match)-else false (not a match)
+//
+//        return transactions.save(newTransaction);
+//
+//    }
+
     // Compare the buy and sell order offer prices; if buy order price is greater than or equal to the sell order price, returns true (vlid match)-else false (not a match)
-
-
     @Override
-    public boolean matchOrders(int givenOrderId) {
+    public Transaction matchOrders(int givenOrderId) {
         Order givenOrder = orders.getOne(givenOrderId);
         
         Order createdOrder = new Order();
@@ -122,23 +126,19 @@ public class ServiceLayerImpl implements ServiceLayer{
             transaction = makeTransaction(createdOrder, givenOrder);
         }
         
-        if (transaction != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return transaction;
     }
 
     @Override
     public void deleteUnmatchedOrder(int orderId) {
         Order order = orders.getOne(orderId);
-        
+
         // Attempts to delete an order from the db if and the order is active and
         // there exists no transactions that use said order
         List transactionList = transactions.findAllTransactionsForOrder(order.getId());
-        
-        if (order.isActive() &&
-                transactionList.isEmpty()) {
+
+        if (order.isActive()
+                && transactionList.isEmpty()) {
             orders.deleteById(order.getId());
         }
     }
