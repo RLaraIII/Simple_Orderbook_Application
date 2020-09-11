@@ -17,10 +17,11 @@ import org.springframework.stereotype.Repository;
  * @author Minul
  */
 @Repository
-public interface TransactionRepository extends JpaRepository<Transaction, Integer>{
-//    @Query("SELECT t FROM transaction WHERE symbol = ?")
-//    List findAllTransactionsForSymbol(String symbol);
-    
+public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
+
+    @Query("SELECT t FROM Transaction t WHERE t.symbol = :symbol")
+    List findAllTransactionsForSymbol(@Param("symbol") String symbol);
+
     @Query("SELECT t FROM Transaction t WHERE t.buyOrder = :orderId OR t.sellOrder = :orderId")
     List<Transaction> findAllTransactionsForOrder(@Param("orderId") int orderId);
 }

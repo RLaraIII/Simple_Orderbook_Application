@@ -11,6 +11,7 @@ import com.sg.orderbook.repositories.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -20,6 +21,7 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.annotation.Rollback;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
@@ -231,13 +233,134 @@ public class ServiceLayerTest {
 
     @Test
     public void testGetAllTransactionsForSymbol() {
+        // Create AAPL Buy Order
+        Order buyOrder = new Order();
+
+        buyOrder.setActive(true);
+        buyOrder.setOfferPrice(new BigDecimal("100").setScale(2, RoundingMode.HALF_UP));
+        buyOrder.setSide(true);
+        buyOrder.setSize(10);
+        buyOrder.setSymbol("AAPL");
+        buyOrder.setTime(LocalDateTime.now());
+
+        buyOrder = orders.save(buyOrder);
+
+        // Create AAPL Sell Order
+        Order sellOrder = new Order();
+
+        sellOrder.setActive(false);
+        sellOrder.setOfferPrice(new BigDecimal("100").setScale(2, RoundingMode.HALF_UP));
+        sellOrder.setSide(true);
+        sellOrder.setSize(0);
+        sellOrder.setSymbol("AAPL");
+        sellOrder.setTime(LocalDateTime.now());
+
+        sellOrder = orders.save(sellOrder);
+
+        // Retrieve orders, list of sell orders
+        Order gotBuyOrder = orders.findById(buyOrder.getId()).orElse(null);
+        Order gotSellOrder = orders.findById(sellOrder.getId()).orElse(null);
+
+        boolean buySizeBigger = gotBuyOrder.getSize() > gotSellOrder.getSize();
+
+        Transaction transaction = new Transaction();
+        transaction.setBuyOrder(buyOrder);
+        transaction.setSellOrder(sellOrder);
+        transaction.setFinalPrice(gotBuyOrder.getOfferPrice());
+        transaction.setFinalSymbol(gotBuyOrder.getSymbol());
+        transaction.setAmount(buySizeBigger ? gotBuyOrder.getSize() - gotSellOrder.getSize()
+                : gotSellOrder.getSize() - gotBuyOrder.getSize());
+        transaction.setFinalTime(LocalDateTime.now());
+
+        gotBuyOrder.setSize(buySizeBigger ? gotBuyOrder.getSize() - transaction.getSellOrder().getSize() : 0);
+        gotSellOrder.setSize(buySizeBigger ? 0 : gotSellOrder.getSize() - transaction.getBuyOrder().getSize());
+
+        transaction = transactions.save(transaction);
+        gotBuyOrder = orders.save(gotBuyOrder);
+        gotSellOrder = orders.save(gotSellOrder);
+
+        List<Transaction> aaplTransactions = transactions.findAllTransactionsForSymbol(gotBuyOrder.getSymbol());
+
+        assertEquals(1, aaplTransactions.size());
+        assertEquals(gotBuyOrder, transaction.getBuyOrder());
+        assertEquals(gotSellOrder, transaction.getSellOrder());
     }
 
-    /*
-     * @Test public void testDeleteOrder() { }
-     * 
-     * @Test public void testMakeTransaction() { }
-     * 
-     * @Test public void testMatchOrders() { }
-     */
+    @Test
+    public void testDeleteOrder() {
+        Order order = new Order();
+
+        order.setActive(true);
+        order.setOfferPrice(new BigDecimal("100").setScale(2, RoundingMode.HALF_UP));
+        order.setSide(true);
+        order.setSize(10);
+        order.setSymbol("APPL");
+        order.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
+
+        order = orders.save(order);
+
+        Order gotOrder = orders.findById(order.getId()).orElse(null);
+
+        orders.deleteById(gotOrder.getId());
+
+        assertEquals(0, orders.findAll());
+    }
+
+    @Test
+    public void testMakeTransaction() {
+        Order firstOrder = new Order();
+
+        firstOrder.setActive(true);
+        firstOrder.setOfferPrice(new BigDecimal("100").setScale(2, RoundingMode.HALF_UP));
+        firstOrder.setSide(true);
+        firstOrder.setSize(10);
+        firstOrder.setSymbol("APPL");
+        firstOrder.setTime(LocalDateTime.now());
+
+        firstOrder = orders.save(firstOrder);
+
+        Order secondOrder = new Order();
+
+        secondOrder.setActive(true);
+        secondOrder.setOfferPrice(new BigDecimal("100").setScale(2, RoundingMode.HALF_UP));
+        secondOrder.setSide(!firstOrder.isSide());
+        secondOrder.setSize(10);
+        secondOrder.setSymbol("APPL");
+        secondOrder.setTime(LocalDateTime.now());
+
+        secondOrder = orders.save(secondOrder);
+
+        Transaction transaction = service.makeTransaction(firstOrder, secondOrder);
+
+        assertEquals(firstOrder, transaction.getBuyOrder());
+        assertEquals(secondOrder, transaction.getSellOrder());
+        assertEquals(0, firstOrder.getSize());
+        assertEquals(0, secondOrder.getSize());
+    }
+
+    @Test
+    public void testMatchOrders() {
+        Order firstOrder = new Order();
+
+        firstOrder.setActive(true);
+        firstOrder.setOfferPrice(new BigDecimal("100").setScale(2, RoundingMode.HALF_UP));
+        firstOrder.setSide(true);
+        firstOrder.setSize(10);
+        firstOrder.setSymbol("APPL");
+        firstOrder.setTime(LocalDateTime.now());
+
+        firstOrder = orders.save(firstOrder);
+        
+        Transaction transaction = service.matchOrders(firstOrder.getId());
+        Order secondOrder = firstOrder.isSide() 
+                ? transaction.getSellOrder() 
+                : transaction.getBuyOrder();
+        
+        assertNotNull(secondOrder);
+        assertEquals(1, transactions.findAll());
+        assertEquals(firstOrder.getOfferPrice(), secondOrder.getOfferPrice());
+        assertEquals(firstOrder.getSymbol(), secondOrder.getSymbol());
+        assertNotEquals(firstOrder.isSide(), secondOrder.isSide());
+    }
+
 }
