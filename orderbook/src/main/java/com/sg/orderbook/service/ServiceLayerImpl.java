@@ -96,7 +96,7 @@ public class ServiceLayerImpl implements ServiceLayer{
 
 
     @Override
-    public boolean matchOrders(int givenOrderId) {
+    public Transaction matchOrders(int givenOrderId) {
         Order givenOrder = orders.getOne(givenOrderId);
         
         Order createdOrder = new Order();
@@ -122,11 +122,7 @@ public class ServiceLayerImpl implements ServiceLayer{
             transaction = makeTransaction(createdOrder, givenOrder);
         }
         
-        if (transaction != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return transaction;
     }
 
     @Override
