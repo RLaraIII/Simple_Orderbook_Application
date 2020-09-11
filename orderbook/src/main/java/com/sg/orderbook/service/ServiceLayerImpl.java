@@ -28,15 +28,15 @@ public class ServiceLayerImpl implements ServiceLayer{
     @Autowired
     TransactionRepository transactions;
     
-//    @Override
-//    public List<Order> getAllOrders() {
-//        return orders.findAll();
-//    }
-//
-//    @Override
-//    public List<Order> getAllActiveOrders() {
-//        return orders.findAllBySide();
-//    }
+    @Override
+    public List<Order> getAllBuyOrders() {
+        return orders.findAllBuyOrders();
+    }
+
+    @Override
+    public List<Order> getAllSellOrders() {
+        return orders.findAllSellOrders();
+    }
     
     // get list of transactions stored in transaction database table
     @Override
@@ -59,12 +59,6 @@ public class ServiceLayerImpl implements ServiceLayer{
             }
         }
         return transactionsForSymbol;
-    }
-    
-    // Delete from order table in database using the given order's ID
-    @Override
-    public void deleteOrder(Order order) {
-        orders.deleteById(order.getId());
     }
     
     // Create new transaction and save it to transaction database table; pull info from buy order
@@ -97,5 +91,16 @@ public class ServiceLayerImpl implements ServiceLayer{
             return false;
         }
     }
-    
+
+    @Override
+    public void deleteUnmatchedOrder(Order order) {
+        // Attempts to delete an order from the db if and the order is active and
+        // there exists no transactions that use said order
+        List transactionList = transactions.findAllTransactionsForOrder(order.getId());
+        
+        if (order.isActive() &&
+                transactionList.isEmpty()) {
+            orders.deleteById(order.getId());
+        }
+    }
 }

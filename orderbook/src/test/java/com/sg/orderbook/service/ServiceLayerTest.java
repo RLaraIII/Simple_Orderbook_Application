@@ -10,34 +10,18 @@ import com.sg.orderbook.repositories.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.test.annotation.Rollback;
+import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  *
  * @author R Lara
  */
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = Replace.NONE)
-@Rollback(false)
+@SpringBootTest
 public class ServiceLayerTest {
     
-    @TestConfiguration
-    static class ServiceLayerTestContextConfiguration {
-        @Bean
-        public ServiceLayer serviceLayer() {
-            return new ServiceLayerImpl();
-        }
-    }
-    
-
+    /*
     @Autowired
     private TransactionRepository transactions;
     
@@ -45,10 +29,11 @@ public class ServiceLayerTest {
     private OrderRepository orders;
 
     @Autowired
-    private ServiceLayerImpl service;
+    private ServiceLayerImpl service;*/
     
     @Test
     public void testGetAllOrders() {
+        /*
         Order order = new Order();
         
         order.setActive(true);
@@ -59,7 +44,7 @@ public class ServiceLayerTest {
         order.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
         
         order = orders.save(order);
-        
+        */
     }
 
     /*
