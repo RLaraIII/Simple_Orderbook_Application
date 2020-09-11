@@ -13,12 +13,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  *
  * @author Minul
  */
 @Entity
+@Table( name = "`order`" )
 public class Order {
     
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,7 +40,7 @@ public class Order {
     @Column
     private boolean active; // active - 1 inavtice - 0
     
-    @Column
+    @Column(name = "offerprice")
     private BigDecimal offerPrice;
     
     @Column

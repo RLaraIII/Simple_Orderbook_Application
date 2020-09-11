@@ -5,76 +5,70 @@
  */
 package com.sg.orderbook.service;
 
+import com.sg.orderbook.entities.Order;
 import com.sg.orderbook.repositories.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.annotation.Rollback;
+import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  *
  * @author R Lara
  */
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = Replace.NONE)
-@Rollback(false)
+@SpringBootTest
 public class ServiceLayerTest {
-
-    @Autowired
-    private OrderRepository orders;
     
+    /*
     @Autowired
     private TransactionRepository transactions;
+    
+    @Autowired
+    private OrderRepository orders;
 
-    /**
-     * Test of getAllOrders method, of class ServiceLayer.
-     */
+    @Autowired
+    private ServiceLayerImpl service;*/
+    
     @Test
     public void testGetAllOrders() {
+        /*
+        Order order = new Order();
+        
+        order.setActive(true);
+        order.setOfferPrice(new BigDecimal("100").setScale(2, RoundingMode.HALF_UP));
+        order.setSide(true);
+        order.setSize(10);
+        order.setSymbol("APPL");
+        order.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
+        
+        order = orders.save(order);
+        */
     }
 
-    /**
-     * Test of getAllActiveOrders method, of class ServiceLayer.
-     */
+    /*
     @Test
     public void testGetAllActiveOrders() {
     }
 
-    /**
-     * Test of getAllTransactions method, of class ServiceLayer.
-     */
     @Test
     public void testGetAllTransactions() {
     }
 
-    /**
-     * Test of getAllTransactionsForSymbol method, of class ServiceLayer.
-     */
     @Test
     public void testGetAllTransactionsForSymbol() {
     }
 
-    /**
-     * Test of deleteOrder method, of class ServiceLayer.
-     */
     @Test
     public void testDeleteOrder() {
     }
 
-    /**
-     * Test of makeTransaction method, of class ServiceLayer.
-     */
     @Test
     public void testMakeTransaction() {
     }
 
-    /**
-     * Test of matchOrders method, of class ServiceLayer.
-     */
     @Test
     public void testMatchOrders() {
-    }
-    
+    }*/
 }

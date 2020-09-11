@@ -27,7 +27,9 @@ public interface ServiceLayer {
 
     public List<Transaction> getAllTransactionsForSymbol(String symbol);
     
-    public void deleteUnmatchedOrder(Order order);
-
-    public boolean matchOrders(Order order);
+    public void deleteUnmatchedOrder(int orderId);
+    
+    public void makeTransaction(Order buyOrder, Order sellOrder);
+    
+    public boolean matchOrders(int buyOrderId, int sellOrderId);
 }
