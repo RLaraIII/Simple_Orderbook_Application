@@ -84,7 +84,10 @@ public class ServiceLayerImpl implements ServiceLayer{
     
     // Compare the buy and sell order offer prices; if buy order price is greater than or equal to the sell order price, returns true (vlid match)-else false (not a match)
     @Override
-    public boolean matchOrders(Order buyOrder, Order sellOrder) {
+    public boolean matchOrders(int buyOrderId, int sellOrderId) {
+        Order buyOrder = orders.getOne(buyOrderId);
+        Order sellOrder = orders.getOne(sellOrderId);
+        
         if (buyOrder.getOfferPrice().compareTo(sellOrder.getOfferPrice()) >= 0) {
             return true;
         } else {
@@ -93,7 +96,9 @@ public class ServiceLayerImpl implements ServiceLayer{
     }
 
     @Override
-    public void deleteUnmatchedOrder(Order order) {
+    public void deleteUnmatchedOrder(int orderId) {
+        Order order = orders.getOne(orderId);
+        
         // Attempts to delete an order from the db if and the order is active and
         // there exists no transactions that use said order
         List transactionList = transactions.findAllTransactionsForOrder(order.getId());
