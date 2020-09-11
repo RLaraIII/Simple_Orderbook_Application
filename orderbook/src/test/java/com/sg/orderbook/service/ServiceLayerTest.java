@@ -78,7 +78,7 @@ public class ServiceLayerTest {
         firstOrder.setSide(true);
         firstOrder.setSize(10);
         firstOrder.setSymbol("APPL");
-        firstOrder.setTime(LocalDateTime.now());
+        firstOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
 
         firstOrder = orders.save(firstOrder);
 
@@ -89,7 +89,9 @@ public class ServiceLayerTest {
         secondOrder.setSide(true);
         secondOrder.setSize(0);
         secondOrder.setSymbol("APPL");
-        secondOrder.setTime(LocalDateTime.now());
+        secondOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
+        
+        secondOrder = orders.save(secondOrder);
 
         Order gotFirstOrder = orders.findById(firstOrder.getId()).orElse(null);
         Order gotSecondOrder = orders.findById(secondOrder.getId()).orElse(null);
@@ -110,7 +112,7 @@ public class ServiceLayerTest {
         buyOrder.setSide(true);
         buyOrder.setSize(10);
         buyOrder.setSymbol("APPL");
-        buyOrder.setTime(LocalDateTime.now());
+        buyOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
 
         buyOrder = orders.save(buyOrder);
 
@@ -122,21 +124,21 @@ public class ServiceLayerTest {
         sellOrder.setSide(true);
         sellOrder.setSize(0);
         sellOrder.setSymbol("APPL");
-        sellOrder.setTime(LocalDateTime.now());
+        sellOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
 
         sellOrder = orders.save(sellOrder);
 
         // Retrieve orders, list of buy orders
         Order gotBuyOrder = orders.findById(buyOrder.getId()).orElse(null);
         Order gotSellOrder = orders.findById(sellOrder.getId()).orElse(null);
-        List<Order> gotBuyOrders = orders.findAllBuyOrders();
+        List<Order> gotBuyOrders = service.getAllBuyOrders();
 
         // Assert
         assertEquals(buyOrder, gotBuyOrder);
         assertEquals(sellOrder, gotSellOrder);
         assertEquals(1, gotBuyOrders.size());
-        assertEquals(gotBuyOrders.get(1), gotBuyOrder);
-        assertEquals(gotBuyOrders.get(1).isSide(), true);
+        assertEquals(gotBuyOrders.get(0), gotBuyOrder);
+        assertEquals(gotBuyOrders.get(0).isSide(), true);
     }
 
     @Test
@@ -149,7 +151,7 @@ public class ServiceLayerTest {
         buyOrder.setSide(true);
         buyOrder.setSize(10);
         buyOrder.setSymbol("APPL");
-        buyOrder.setTime(LocalDateTime.now());
+        buyOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
 
         buyOrder = orders.save(buyOrder);
 
@@ -158,17 +160,17 @@ public class ServiceLayerTest {
 
         sellOrder.setActive(false);
         sellOrder.setOfferPrice(new BigDecimal("100").setScale(2, RoundingMode.HALF_UP));
-        sellOrder.setSide(true);
+        sellOrder.setSide(false);
         sellOrder.setSize(0);
         sellOrder.setSymbol("APPL");
-        sellOrder.setTime(LocalDateTime.now());
+        sellOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
 
         sellOrder = orders.save(sellOrder);
 
         // Retrieve orders, list of sell orders
         Order gotBuyOrder = orders.findById(buyOrder.getId()).orElse(null);
         Order gotSellOrder = orders.findById(sellOrder.getId()).orElse(null);
-        List<Order> gotSellOrders = orders.findAllSellOrders();
+        List<Order> gotSellOrders = service.getAllSellOrders();
 
         // Assert
         assertEquals(buyOrder, gotBuyOrder);
@@ -188,7 +190,7 @@ public class ServiceLayerTest {
         buyOrder.setSide(true);
         buyOrder.setSize(10);
         buyOrder.setSymbol("APPL");
-        buyOrder.setTime(LocalDateTime.now());
+        buyOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
 
         buyOrder = orders.save(buyOrder);
 
@@ -200,7 +202,7 @@ public class ServiceLayerTest {
         sellOrder.setSide(true);
         sellOrder.setSize(0);
         sellOrder.setSymbol("APPL");
-        sellOrder.setTime(LocalDateTime.now());
+        sellOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
 
         sellOrder = orders.save(sellOrder);
 
@@ -217,7 +219,7 @@ public class ServiceLayerTest {
         transaction.setFinalSymbol(gotBuyOrder.getSymbol());
         transaction.setAmount(buySizeBigger ? gotBuyOrder.getSize() - gotSellOrder.getSize()
                 : gotSellOrder.getSize() - gotBuyOrder.getSize());
-        transaction.setFinalTime(LocalDateTime.now());
+        transaction.setFinalTime(LocalDateTime.parse("2020-01-01T12:00:00"));
 
         gotBuyOrder.setSize(buySizeBigger ? gotBuyOrder.getSize() - transaction.getSellOrder().getSize() : 0);
         gotSellOrder.setSize(buySizeBigger ? 0 : gotSellOrder.getSize() - transaction.getBuyOrder().getSize());
@@ -226,7 +228,9 @@ public class ServiceLayerTest {
         gotBuyOrder = orders.save(gotBuyOrder);
         gotSellOrder = orders.save(gotSellOrder);
 
-        assertNotNull(transaction);
+        List<Transaction> listTransactions = service.getAllTransactions();
+        assertNotNull(listTransactions);
+        assertEquals(1, listTransactions.size());
         assertEquals(gotBuyOrder, transaction.getBuyOrder());
         assertEquals(gotSellOrder, transaction.getSellOrder());
     }
@@ -241,7 +245,7 @@ public class ServiceLayerTest {
         buyOrder.setSide(true);
         buyOrder.setSize(10);
         buyOrder.setSymbol("AAPL");
-        buyOrder.setTime(LocalDateTime.now());
+        buyOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
 
         buyOrder = orders.save(buyOrder);
 
@@ -253,7 +257,7 @@ public class ServiceLayerTest {
         sellOrder.setSide(true);
         sellOrder.setSize(0);
         sellOrder.setSymbol("AAPL");
-        sellOrder.setTime(LocalDateTime.now());
+        sellOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
 
         sellOrder = orders.save(sellOrder);
 
@@ -270,7 +274,7 @@ public class ServiceLayerTest {
         transaction.setFinalSymbol(gotBuyOrder.getSymbol());
         transaction.setAmount(buySizeBigger ? gotBuyOrder.getSize() - gotSellOrder.getSize()
                 : gotSellOrder.getSize() - gotBuyOrder.getSize());
-        transaction.setFinalTime(LocalDateTime.now());
+        transaction.setFinalTime(LocalDateTime.parse("2020-01-01T12:00:00"));
 
         gotBuyOrder.setSize(buySizeBigger ? gotBuyOrder.getSize() - transaction.getSellOrder().getSize() : 0);
         gotSellOrder.setSize(buySizeBigger ? 0 : gotSellOrder.getSize() - transaction.getBuyOrder().getSize());
@@ -279,7 +283,7 @@ public class ServiceLayerTest {
         gotBuyOrder = orders.save(gotBuyOrder);
         gotSellOrder = orders.save(gotSellOrder);
 
-        List<Transaction> aaplTransactions = transactions.findAllTransactionsForSymbol(gotBuyOrder.getSymbol());
+        List<Transaction> aaplTransactions = service.getAllTransactionsForSymbol(gotBuyOrder.getSymbol());
 
         assertEquals(1, aaplTransactions.size());
         assertEquals(gotBuyOrder, transaction.getBuyOrder());
@@ -300,10 +304,12 @@ public class ServiceLayerTest {
         order = orders.save(order);
 
         Order gotOrder = orders.findById(order.getId()).orElse(null);
+        
+        assertNotNull(gotOrder);
 
         orders.deleteById(gotOrder.getId());
 
-        assertEquals(0, orders.findAll());
+        assertEquals(0, orders.findAll().size());
     }
 
     @Test
@@ -315,7 +321,7 @@ public class ServiceLayerTest {
         firstOrder.setSide(true);
         firstOrder.setSize(10);
         firstOrder.setSymbol("APPL");
-        firstOrder.setTime(LocalDateTime.now());
+        firstOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
 
         firstOrder = orders.save(firstOrder);
 
@@ -326,7 +332,7 @@ public class ServiceLayerTest {
         secondOrder.setSide(!firstOrder.isSide());
         secondOrder.setSize(10);
         secondOrder.setSymbol("APPL");
-        secondOrder.setTime(LocalDateTime.now());
+        secondOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
 
         secondOrder = orders.save(secondOrder);
 
@@ -347,7 +353,7 @@ public class ServiceLayerTest {
         firstOrder.setSide(true);
         firstOrder.setSize(10);
         firstOrder.setSymbol("APPL");
-        firstOrder.setTime(LocalDateTime.now());
+        firstOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
 
         firstOrder = orders.save(firstOrder);
         

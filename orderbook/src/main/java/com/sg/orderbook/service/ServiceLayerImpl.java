@@ -66,8 +66,8 @@ public class ServiceLayerImpl implements ServiceLayer {
     public Transaction makeTransaction(Order buyOrder, Order sellOrder) {
         // Create the time field for the new transaction w/ format that sql can handle
         LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
-        String formattedDateTime = now.format(formatter);
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+//        String formattedDateTime = now.format(formatter);
 
         // Create and fill a new transaction
         Transaction newTransaction = new Transaction();
@@ -75,7 +75,7 @@ public class ServiceLayerImpl implements ServiceLayer {
         newTransaction.setSellOrder(sellOrder);
         newTransaction.setFinalSymbol(buyOrder.getSymbol());
         newTransaction.setFinalPrice(buyOrder.getOfferPrice());
-        newTransaction.setFinalTime(LocalDateTime.parse(formattedDateTime));
+        newTransaction.setFinalTime(now);
         
         boolean buySizeBigger = buyOrder.getSize() > sellOrder.getSize();
         
@@ -92,11 +92,11 @@ public class ServiceLayerImpl implements ServiceLayer {
         return newTransaction;
     }
     
-    // Compare the buy and sell order offer prices; if buy order price is greater than or equal to the sell order price, returns true (vlid match)-else false (not a match)
-
-        return transactions.save(newTransaction);
-
-    }
+//    // Compare the buy and sell order offer prices; if buy order price is greater than or equal to the sell order price, returns true (vlid match)-else false (not a match)
+//
+//        return transactions.save(newTransaction);
+//
+//    }
 
     // Compare the buy and sell order offer prices; if buy order price is greater than or equal to the sell order price, returns true (vlid match)-else false (not a match)
     @Override
