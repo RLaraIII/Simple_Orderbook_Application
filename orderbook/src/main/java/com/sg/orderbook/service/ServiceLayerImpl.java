@@ -77,7 +77,7 @@ public class ServiceLayerImpl implements ServiceLayer {
         newTransaction.setFinalPrice(buyOrder.getOfferPrice());
         newTransaction.setFinalTime(now);
         
-        boolean buySizeBigger = buyOrder.getSize() > sellOrder.getSize();
+        boolean buySizeBigger = buyOrder.getSize() >= sellOrder.getSize();
         
         newTransaction.setAmount(buySizeBigger ? buyOrder.getSize() - sellOrder.getSize()
                 : sellOrder.getSize() - buyOrder.getSize());

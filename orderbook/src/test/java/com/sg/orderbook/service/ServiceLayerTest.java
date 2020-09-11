@@ -340,8 +340,8 @@ public class ServiceLayerTest {
 
         assertEquals(firstOrder, transaction.getBuyOrder());
         assertEquals(secondOrder, transaction.getSellOrder());
-        assertEquals(0, firstOrder.getSize());
-        assertEquals(0, secondOrder.getSize());
+        assertEquals(0, transaction.getBuyOrder().getSize());
+        assertEquals(0, transaction.getSellOrder().getSize());
     }
 
     @Test
@@ -363,7 +363,7 @@ public class ServiceLayerTest {
                 : transaction.getBuyOrder();
         
         assertNotNull(secondOrder);
-        assertEquals(1, transactions.findAll());
+        assertEquals(1, transactions.findAll().size());
         assertEquals(firstOrder.getOfferPrice(), secondOrder.getOfferPrice());
         assertEquals(firstOrder.getSymbol(), secondOrder.getSymbol());
         assertNotEquals(firstOrder.isSide(), secondOrder.isSide());
