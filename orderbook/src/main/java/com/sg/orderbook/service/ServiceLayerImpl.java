@@ -63,7 +63,7 @@ public class ServiceLayerImpl implements ServiceLayer{
     
     // Delete from order table in database using the given order's ID
     @Override
-    public void deleteOrder(Order order) {
+    public void deleteUnmatchedOrder(Order order) {
         orders.deleteById(order.getId());
     }
     
@@ -89,13 +89,21 @@ public class ServiceLayerImpl implements ServiceLayer{
     }
     
     // Compare the buy and sell order offer prices; if buy order price is greater than or equal to the sell order price, returns true (vlid match)-else false (not a match)
+
+
     @Override
-    public boolean matchOrders(Order buyOrder, Order sellOrder) {
-        if (buyOrder.getOfferPrice().compareTo(sellOrder.getOfferPrice()) >= 0) {
-            return true;
-        } else {
-            return false;
-        }
+    public List<Order> getAllBuyOrders() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Order> getAllSellOrders() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean matchOrders(Order order) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }
