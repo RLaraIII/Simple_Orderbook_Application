@@ -15,17 +15,21 @@ import java.util.List;
  */
 @Component
 public interface ServiceLayer {
+//    public List<Order> getAllOrders();
+//    
+//    public List<Order> getAllActiveOrders();
+
     public List<Order> getAllBuyOrders();
     
     public List<Order> getAllSellOrders();
-    
+
     public List<Transaction> getAllTransactions();
-    
+
     public List<Transaction> getAllTransactionsForSymbol(String symbol);
     
-    public void deleteUnmatchedOrder(Order order);
+    public void deleteUnmatchedOrder(int orderId);
     
     public void makeTransaction(Order buyOrder, Order sellOrder);
     
-    public boolean matchOrders(Order buyOrder, Order sellOrder);
+    public boolean matchOrders(int buyOrderId, int sellOrderId);
 }
