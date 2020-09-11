@@ -22,7 +22,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
     
     List <Transaction> findBySymbol(String symbol);
     
-    List <Transaction> findByFinalDate(LocalDateTime finalTime);
+    List <Transaction> findByFinalTime(LocalDateTime finalTime);
     
     @Query("SELECT t FROM Transaction t WHERE t.buyOrder = :orderId OR t.sellOrder = :orderId")
     List<Transaction> findAllTransactionsForOrder(@Param("orderId") int orderId);
