@@ -161,7 +161,7 @@ public class ServiceLayerTest {
         sellOrder.setActive(false);
         sellOrder.setOfferPrice(new BigDecimal("100").setScale(2, RoundingMode.HALF_UP));
         sellOrder.setSide(false);
-        sellOrder.setSize(0);
+        sellOrder.setSize(10);
         sellOrder.setSymbol("APPL");
         sellOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
 
@@ -176,8 +176,8 @@ public class ServiceLayerTest {
         assertEquals(buyOrder, gotBuyOrder);
         assertEquals(sellOrder, gotSellOrder);
         assertEquals(1, gotSellOrders.size());
-        assertEquals(gotSellOrders.get(1), gotBuyOrder);
-        assertEquals(gotSellOrders.get(1).isSide(), true);
+        assertEquals(gotSellOrders.get(0), sellOrder);
+        assertEquals(gotSellOrders.get(0).isSide(), false);
     }
 
     @Test
