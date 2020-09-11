@@ -38,7 +38,7 @@ public class Order {
     @Column
     private boolean active; // active - 1 inavtice - 0
     
-    @Column
+    @Column(name = "offerprice")
     private BigDecimal offerPrice;
     
     @Column
