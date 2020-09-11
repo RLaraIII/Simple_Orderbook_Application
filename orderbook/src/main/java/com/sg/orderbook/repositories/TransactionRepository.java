@@ -6,6 +6,7 @@
 package com.sg.orderbook.repositories;
 
 import com.sg.orderbook.entities.Transaction;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,8 +19,10 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Integer>{
-    @Query("SELECT t FROM Transaction t WHERE t.finalSymbol = :symbol")
-    List findAllTransactionsForSymbol(@Param("symbol") String symbol);
+    
+    List <Transaction> findBySymbol(String symbol);
+    
+    List <Transaction> findByFinalDate(LocalDateTime finalTime);
     
     @Query("SELECT t FROM Transaction t WHERE t.buyOrder = :orderId OR t.sellOrder = :orderId")
     List<Transaction> findAllTransactionsForOrder(@Param("orderId") int orderId);
