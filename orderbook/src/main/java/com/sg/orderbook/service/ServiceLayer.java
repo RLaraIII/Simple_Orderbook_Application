@@ -29,7 +29,8 @@ public interface ServiceLayer {
     
     public void deleteUnmatchedOrder(int orderId);
     
-    public void makeTransaction(Order buyOrder, Order sellOrder);
+    public Transaction makeTransaction(Order buyOrder, Order sellOrder);
     
-    public boolean matchOrders(int buyOrderId, int sellOrderId);
+    public boolean matchOrders(int givenOrderId);
+    
 }

@@ -20,7 +20,7 @@ import javax.persistence.Table;
  * @author Minul
  */
 @Entity
-@Table( name = "`order`" )
+@Table(name = "`order`")
 public class Order {
     
     @GeneratedValue(strategy = GenerationType.IDENTITY)

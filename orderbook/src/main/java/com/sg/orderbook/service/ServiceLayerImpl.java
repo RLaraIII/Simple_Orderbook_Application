@@ -63,7 +63,7 @@ public class ServiceLayerImpl implements ServiceLayer{
     
     // Create new transaction and save it to transaction database table; pull info from buy order
     @Override
-    public void makeTransaction(Order buyOrder, Order sellOrder) {
+    public Transaction makeTransaction(Order buyOrder, Order sellOrder) {
         // Create the time field for the new transaction w/ format that sql can handle
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
@@ -73,24 +73,56 @@ public class ServiceLayerImpl implements ServiceLayer{
         Transaction newTransaction = new Transaction();
         newTransaction.setBuyOrder(buyOrder);
         newTransaction.setSellOrder(sellOrder);
-        newTransaction.setAmount(buyOrder.getSize());
         newTransaction.setFinalSymbol(buyOrder.getSymbol());
         newTransaction.setFinalPrice(buyOrder.getOfferPrice());
         newTransaction.setFinalTime(LocalDateTime.parse(formattedDateTime));
         
-        transactions.save(newTransaction);
+        boolean buySizeBigger = buyOrder.getSize() > sellOrder.getSize();
         
+        newTransaction.setAmount(buySizeBigger ? buyOrder.getSize() - sellOrder.getSize()
+                : sellOrder.getSize() - buyOrder.getSize());
+        
+        buyOrder.setSize(buySizeBigger ? buyOrder.getSize() - newTransaction.getSellOrder().getSize() : 0);
+        sellOrder.setSize(buySizeBigger ? 0 : sellOrder.getSize() - newTransaction.getBuyOrder().getSize());
+
+        buyOrder = orders.save(buyOrder);
+        sellOrder = orders.save(sellOrder);
+        newTransaction = transactions.save(newTransaction);
+        
+        return newTransaction;
     }
     
     // Compare the buy and sell order offer prices; if buy order price is greater than or equal to the sell order price, returns true (vlid match)-else false (not a match)
 
 
     @Override
-    public boolean matchOrders(int buyOrderId, int sellOrderId) {
-        Order buyOrder = orders.getOne(buyOrderId);
-        Order sellOrder = orders.getOne(sellOrderId);
+    public boolean matchOrders(int givenOrderId) {
+        Order givenOrder = orders.getOne(givenOrderId);
         
-        if (buyOrder.getOfferPrice().compareTo(sellOrder.getOfferPrice()) >= 0) {
+        Order createdOrder = new Order();
+
+        createdOrder.setSide(!givenOrder.isSide());
+        createdOrder.setActive(false);
+        createdOrder.setSize(givenOrder.getSize());
+        createdOrder.setSymbol(givenOrder.getSymbol());
+        createdOrder.setTime(LocalDateTime.now());
+        createdOrder.setOfferPrice(givenOrder.getOfferPrice());
+        
+        createdOrder = orders.save(createdOrder);
+        
+        givenOrder.setActive(false);
+        
+        givenOrder = orders.save(givenOrder);
+        
+        Transaction transaction = new Transaction();
+        
+        if (givenOrder.isSide()) {
+            transaction = makeTransaction(givenOrder, createdOrder);
+        } else {
+            transaction = makeTransaction(createdOrder, givenOrder);
+        }
+        
+        if (transaction != null) {
             return true;
         } else {
             return false;
@@ -110,4 +142,5 @@ public class ServiceLayerImpl implements ServiceLayer{
             orders.deleteById(order.getId());
         }
     }
+
 }
