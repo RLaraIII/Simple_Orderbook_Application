@@ -23,4 +23,5 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
     
     @Query("SELECT t FROM Transaction t WHERE t.buyOrder = :orderId OR t.sellOrder = :orderId")
     List<Transaction> findAllTransactionsForOrder(@Param("orderId") int orderId);
+    
 }
