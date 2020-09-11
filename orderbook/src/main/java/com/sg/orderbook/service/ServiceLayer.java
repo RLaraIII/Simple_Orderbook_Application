@@ -31,6 +31,6 @@ public interface ServiceLayer {
     
     public Transaction makeTransaction(Order buyOrder, Order sellOrder);
     
-    public boolean matchOrders(int givenOrderId);
+    public Transaction matchOrders(int givenOrderId);
     
 }
