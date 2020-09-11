@@ -68,114 +68,114 @@ public class ServiceLayerTest {
         assertEquals(order, gotOrder);
     }
 
-//    @Test
-//    public void testGetAllActiveOrders() {
-//        Order firstOrder = new Order();
-//
-//        firstOrder.setActive(true);
-//        firstOrder.setOfferPrice(new BigDecimal("100").setScale(2, RoundingMode.HALF_UP));
-//        firstOrder.setSide(true);
-//        firstOrder.setSize(10);
-//        firstOrder.setSymbol("APPL");
-//        firstOrder.setTime(LocalDateTime.now());
-//
-//        firstOrder = orders.save(firstOrder);
-//
-//        Order secondOrder = new Order();
-//
-//        secondOrder.setActive(false);
-//        secondOrder.setOfferPrice(new BigDecimal("100").setScale(2, RoundingMode.HALF_UP));
-//        secondOrder.setSide(true);
-//        secondOrder.setSize(0);
-//        secondOrder.setSymbol("APPL");
-//        secondOrder.setTime(LocalDateTime.now());
-//
-//        Order gotFirstOrder = orders.findById(firstOrder.getId()).orElse(null);
-//        Order gotSecondOrder = orders.findById(secondOrder.getId()).orElse(null);
-//        List<Order> gotActiveOrders = orders.findAllActiveOrders();
-//
-//        assertEquals(firstOrder, gotFirstOrder);
-//        assertEquals(secondOrder, gotSecondOrder);
-//        assertEquals(1, gotActiveOrders.size());
-//    }
+    @Test
+    public void testGetAllActiveOrders() {
+        Order firstOrder = new Order();
 
-//    @Test
-//    public void testGetAllBuyOrders() {
-////        Create Buy Order
-//        Order buyOrder = new Order();
-//
-//        buyOrder.setActive(true);
-//        buyOrder.setOfferPrice(new BigDecimal("100").setScale(2, RoundingMode.HALF_UP));
-//        buyOrder.setSide(true);
-//        buyOrder.setSize(10);
-//        buyOrder.setSymbol("APPL");
-//        buyOrder.setTime(LocalDateTime.now());
-//
-//        buyOrder = orders.save(buyOrder);
-//
-////        Create Sell Order
-//        Order sellOrder = new Order();
-//
-//        sellOrder.setActive(false);
-//        sellOrder.setOfferPrice(new BigDecimal("100").setScale(2, RoundingMode.HALF_UP));
-//        sellOrder.setSide(true);
-//        sellOrder.setSize(0);
-//        sellOrder.setSymbol("APPL");
-//        sellOrder.setTime(LocalDateTime.now());
-//
-//        sellOrder = orders.save(sellOrder);
-//
-////        Retrieve orders, list of buy orders
-//        Order gotBuyOrder = orders.findById(buyOrder.getId()).orElse(null);
-//        Order gotSellOrder = orders.findById(sellOrder.getId()).orElse(null);
-//        List<Order> gotBuyOrders = orders.findAllBuyOrders();
-//
-////        Assert
-//        assertEquals(buyOrder, gotBuyOrder);
-//        assertEquals(sellOrder, gotSellOrder);
-//        assertEquals(1, gotBuyOrders.size());
-//        assertEquals(gotBuyOrders.get(1), gotBuyOrder);
-//        assertEquals(gotBuyOrders.get(1).isSide(), true);
-//    }
+        firstOrder.setActive(true);
+        firstOrder.setOfferPrice(new BigDecimal("100").setScale(2, RoundingMode.HALF_UP));
+        firstOrder.setSide(true);
+        firstOrder.setSize(10);
+        firstOrder.setSymbol("APPL");
+        firstOrder.setTime(LocalDateTime.now());
 
-//    @Test
-//    public void testGetAllSellOrders() {
-//        //        Create Buy Order
-//        Order buyOrder = new Order();
-//
-//        buyOrder.setActive(true);
-//        buyOrder.setOfferPrice(new BigDecimal("100").setScale(2, RoundingMode.HALF_UP));
-//        buyOrder.setSide(true);
-//        buyOrder.setSize(10);
-//        buyOrder.setSymbol("APPL");
-//        buyOrder.setTime(LocalDateTime.now());
-//
-//        buyOrder = orders.save(buyOrder);
-//
-////        Create Sell Order
-//        Order sellOrder = new Order();
-//
-//        sellOrder.setActive(false);
-//        sellOrder.setOfferPrice(new BigDecimal("100").setScale(2, RoundingMode.HALF_UP));
-//        sellOrder.setSide(true);
-//        sellOrder.setSize(0);
-//        sellOrder.setSymbol("APPL");
-//        sellOrder.setTime(LocalDateTime.now());
-//
-//        sellOrder = orders.save(sellOrder);
-//
-////        Retrieve orders, list of sell orders
-//        Order gotBuyOrder = orders.findById(buyOrder.getId()).orElse(null);
-//        Order gotSellOrder = orders.findById(sellOrder.getId()).orElse(null);
-//        List<Order> gotSellOrders = orders.findAllSellOrders();
-//
-////        Assert
-//        assertEquals(buyOrder, gotBuyOrder);
-//        assertEquals(sellOrder, gotSellOrder);
-//        assertEquals(1, gotSellOrders.size());
-//        assertEquals(gotSellOrders.get(1), gotBuyOrder);
-//        assertEquals(gotSellOrders.get(1).isSide(), true);
-//    }
+        firstOrder = orders.save(firstOrder);
+
+        Order secondOrder = new Order();
+
+        secondOrder.setActive(false);
+        secondOrder.setOfferPrice(new BigDecimal("100").setScale(2, RoundingMode.HALF_UP));
+        secondOrder.setSide(true);
+        secondOrder.setSize(0);
+        secondOrder.setSymbol("APPL");
+        secondOrder.setTime(LocalDateTime.now());
+
+        Order gotFirstOrder = orders.findById(firstOrder.getId()).orElse(null);
+        Order gotSecondOrder = orders.findById(secondOrder.getId()).orElse(null);
+        List<Order> gotActiveOrders = orders.findAllActiveOrders();
+
+        assertEquals(firstOrder, gotFirstOrder);
+        assertEquals(secondOrder, gotSecondOrder);
+        assertEquals(1, gotActiveOrders.size());
+    }
+
+    @Test
+    public void testGetAllBuyOrders() {
+//        Create Buy Order
+        Order buyOrder = new Order();
+
+        buyOrder.setActive(true);
+        buyOrder.setOfferPrice(new BigDecimal("100").setScale(2, RoundingMode.HALF_UP));
+        buyOrder.setSide(true);
+        buyOrder.setSize(10);
+        buyOrder.setSymbol("APPL");
+        buyOrder.setTime(LocalDateTime.now());
+
+        buyOrder = orders.save(buyOrder);
+
+//        Create Sell Order
+        Order sellOrder = new Order();
+
+        sellOrder.setActive(false);
+        sellOrder.setOfferPrice(new BigDecimal("100").setScale(2, RoundingMode.HALF_UP));
+        sellOrder.setSide(true);
+        sellOrder.setSize(0);
+        sellOrder.setSymbol("APPL");
+        sellOrder.setTime(LocalDateTime.now());
+
+        sellOrder = orders.save(sellOrder);
+
+//        Retrieve orders, list of buy orders
+        Order gotBuyOrder = orders.findById(buyOrder.getId()).orElse(null);
+        Order gotSellOrder = orders.findById(sellOrder.getId()).orElse(null);
+        List<Order> gotBuyOrders = orders.findAllBuyOrders();
+
+//        Assert
+        assertEquals(buyOrder, gotBuyOrder);
+        assertEquals(sellOrder, gotSellOrder);
+        assertEquals(1, gotBuyOrders.size());
+        assertEquals(gotBuyOrders.get(1), gotBuyOrder);
+        assertEquals(gotBuyOrders.get(1).isSide(), true);
+    }
+
+    @Test
+    public void testGetAllSellOrders() {
+        //        Create Buy Order
+        Order buyOrder = new Order();
+
+        buyOrder.setActive(true);
+        buyOrder.setOfferPrice(new BigDecimal("100").setScale(2, RoundingMode.HALF_UP));
+        buyOrder.setSide(true);
+        buyOrder.setSize(10);
+        buyOrder.setSymbol("APPL");
+        buyOrder.setTime(LocalDateTime.now());
+
+        buyOrder = orders.save(buyOrder);
+
+//        Create Sell Order
+        Order sellOrder = new Order();
+
+        sellOrder.setActive(false);
+        sellOrder.setOfferPrice(new BigDecimal("100").setScale(2, RoundingMode.HALF_UP));
+        sellOrder.setSide(true);
+        sellOrder.setSize(0);
+        sellOrder.setSymbol("APPL");
+        sellOrder.setTime(LocalDateTime.now());
+
+        sellOrder = orders.save(sellOrder);
+
+//        Retrieve orders, list of sell orders
+        Order gotBuyOrder = orders.findById(buyOrder.getId()).orElse(null);
+        Order gotSellOrder = orders.findById(sellOrder.getId()).orElse(null);
+        List<Order> gotSellOrders = orders.findAllSellOrders();
+
+//        Assert
+        assertEquals(buyOrder, gotBuyOrder);
+        assertEquals(sellOrder, gotSellOrder);
+        assertEquals(1, gotSellOrders.size());
+        assertEquals(gotSellOrders.get(1), gotBuyOrder);
+        assertEquals(gotSellOrders.get(1).isSide(), true);
+    }
 
     @Test
     public void testGetAllTransactions() {
