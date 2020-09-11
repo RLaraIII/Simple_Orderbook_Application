@@ -41,7 +41,7 @@ public class MainController {
         List<Order> buyOrders = service.getAllBuyOrders();
         List<Order> sellOrders = service.getAllSellOrders();
         
-        model.addAttribute("buyOrders", buyOrders)
+        model.addAttribute("buyOrders", buyOrders);
         model.addAttribute("sellOrders", sellOrders);
         return "orderbook";
     }
