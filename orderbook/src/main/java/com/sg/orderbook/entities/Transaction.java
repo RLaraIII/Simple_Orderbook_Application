@@ -43,11 +43,11 @@ public class Transaction {
     private String finalSymbol;
     
     @ManyToOne
-    @JoinColumn(name = "orderid", insertable = false, updatable = false)
+    @JoinColumn(name = "buyorderid", insertable = false, updatable = false)
     private Order buyOrder;
     
     @ManyToOne
-    @JoinColumn(name = "orderid", insertable = false, updatable = false)
+    @JoinColumn(name = "sellorderid", insertable = false, updatable = false)
     private Order sellOrder;
 
     public int getId() {
