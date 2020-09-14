@@ -410,7 +410,7 @@ public class ServiceLayerTest {
 
         firstSellOrder.setActive(true);
         firstSellOrder.setOfferPrice(new BigDecimal("576.42").setScale(2, RoundingMode.HALF_UP));
-        firstSellOrder.setSide(true);
+        firstSellOrder.setSide(false);
         firstSellOrder.setSize(10);
         firstSellOrder.setSymbol("GOOG");
         firstSellOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
@@ -421,7 +421,7 @@ public class ServiceLayerTest {
 
         secondSellOrder.setActive(true);
         secondSellOrder.setOfferPrice(new BigDecimal("576.58").setScale(2, RoundingMode.HALF_UP));
-        secondSellOrder.setSide(true);
+        secondSellOrder.setSide(false);
         secondSellOrder.setSize(10);
         secondSellOrder.setSymbol("GOOG");
         secondSellOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
@@ -432,7 +432,7 @@ public class ServiceLayerTest {
 
         thirdSellOrder.setActive(true);
         thirdSellOrder.setOfferPrice(new BigDecimal("576.67").setScale(2, RoundingMode.HALF_UP));
-        thirdSellOrder.setSide(true);
+        thirdSellOrder.setSide(false);
         thirdSellOrder.setSize(10);
         thirdSellOrder.setSymbol("GOOG");
         thirdSellOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));

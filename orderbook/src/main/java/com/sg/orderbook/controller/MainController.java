@@ -36,8 +36,8 @@ public class MainController {
     @Autowired
     ServiceLayer service;
 
-    @GetMapping("/buyOrders")
-    public String buyOrders(HttpServletRequest request, Model model) {
+    @GetMapping("/orderbook")
+    public String viewOrderbook(HttpServletRequest request, Model model) {
         String symbol = request.getParameter("symbol");
         List<Order> buyOrders = service.getAllBuyOrdersForSymbol(symbol);
         List<Order> sellOrders = service.getAllSellOrdersForSymbol(symbol);
@@ -47,15 +47,15 @@ public class MainController {
         return "orderbook";
     }
 
-    @GetMapping("/sellOrders")
-    public String sellOrders(HttpServletRequest request, Model model) {
-        String symbol = request.getParameter("symbol");
-        List<Order> orders = service.getAllSellOrdersForSymbol(symbol);
-        model.addAttribute("orders", orders);
-        return "orderbook";
-    }
+//    @GetMapping("/sellOrders")
+//    public String sellOrders(HttpServletRequest request, Model model) {
+//        String symbol = request.getParameter("symbol");
+//        List<Order> orders = service.getAllSellOrdersForSymbol(symbol);
+//        model.addAttribute("orders", orders);
+//        return "orderbook";
+//    }
 
-    @GetMapping("/tradeHistory")
+    @GetMapping("/tradehistory")
     public String allTransactions(Model model) {
         List<Transaction> transactions = service.getAllTransactions();
         model.addAttribute("transactions", transactions);
@@ -77,7 +77,7 @@ public class MainController {
         return "orderbook";
     }
 
-    @GetMapping("matcheOrder")
+    @GetMapping("matchOrder")
     public String matchOrder(HttpServletRequest request) {
         int id = Integer.parseInt(request.getParameter("id"));
         service.matchOrders(id);
