@@ -1,3 +1,4 @@
+orderId,size,side,time,active,offerPrice,symbol
 1,120,1,2020-01-01T12:00:00,1,576.45,GOOG
 2,75,1,2020-01-01T12:00:01,1,576.45,GOOG
 3,500,1,2020-01-01T12:00:02,1,576.4,GOOG
