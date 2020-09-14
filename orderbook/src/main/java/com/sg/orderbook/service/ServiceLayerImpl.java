@@ -124,9 +124,17 @@ public class ServiceLayerImpl implements ServiceLayer {
         // there exists no transactions that use said order
         List transactionList = transactions.findAllTransactionsForOrder(order.getId());
 
-        if (order.isActive()
-                && transactionList.isEmpty()) {
-            orders.deleteById(order.getId());
+        if (order.getSize() > 0) {
+            
+            if (transactionList.isEmpty()) {
+                orders.deleteById(order.getId());
+            } else {
+                order.setSize(0);
+                order.setActive(false);
+                orders.save(order);
+            }
+            
+            
         }
     }
 
