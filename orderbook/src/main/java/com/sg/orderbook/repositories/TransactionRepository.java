@@ -20,11 +20,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Integer>{
     
-    List <Transaction> findByFinalSymbol(String symbol);
+    List findByFinalSymbol(String symbol);
     
-    List <Transaction> findByFinalTime(LocalDateTime finalTime);
+    List findByFinalTime(LocalDateTime finalTime);
     
     @Query("SELECT t FROM Transaction t WHERE t.buyOrder = :orderId OR t.sellOrder = :orderId")
-    List<Transaction> findAllTransactionsForOrder(@Param("orderId") int orderId);
+    List findAllTransactionsForOrder(@Param("orderId") int orderId);
     
 }

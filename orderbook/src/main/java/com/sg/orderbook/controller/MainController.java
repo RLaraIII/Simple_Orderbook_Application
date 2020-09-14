@@ -7,8 +7,6 @@ package com.sg.orderbook.controller;
 
 import com.sg.orderbook.entities.Order;
 import com.sg.orderbook.entities.Transaction;
-import com.sg.orderbook.repositories.OrderRepository;
-import com.sg.orderbook.repositories.TransactionRepository;
 import com.sg.orderbook.service.ServiceLayer;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
