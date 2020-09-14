@@ -19,9 +19,9 @@ public interface ServiceLayer {
 //    
 //    public List<Order> getAllActiveOrders();
 
-    public List<Order> getAllBuyOrders();
+    public List<Order> getAllBuyOrdersForSymbol(String symbol);
     
-    public List<Order> getAllSellOrders();
+    public List<Order> getAllSellOrdersForSymbol(String symbol);
 
     public List<Transaction> getAllTransactions();
 
@@ -33,4 +33,5 @@ public interface ServiceLayer {
     
     public Transaction matchOrders(int givenOrderId);
     
+    public void findPotentialTransactions(String symbol);
 }
