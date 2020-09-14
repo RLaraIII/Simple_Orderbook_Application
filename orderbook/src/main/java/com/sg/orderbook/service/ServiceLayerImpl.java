@@ -76,19 +76,19 @@ public class ServiceLayerImpl implements ServiceLayer {
         newTransaction.setFinalSymbol(buyOrder.getSymbol());
         newTransaction.setFinalPrice(buyOrder.getOfferPrice());
         newTransaction.setFinalTime(now);
-        
+
         boolean buySizeBigger = buyOrder.getSize() >= sellOrder.getSize();
-        
+
         newTransaction.setAmount(buySizeBigger ? buyOrder.getSize() - sellOrder.getSize()
                 : sellOrder.getSize() - buyOrder.getSize());
-        
+
         buyOrder.setSize(buySizeBigger ? buyOrder.getSize() - newTransaction.getSellOrder().getSize() : 0);
         sellOrder.setSize(buySizeBigger ? 0 : sellOrder.getSize() - newTransaction.getBuyOrder().getSize());
 
         buyOrder = orders.save(buyOrder);
         sellOrder = orders.save(sellOrder);
         newTransaction = transactions.save(newTransaction);
-        
+
         return newTransaction;
     }
 
@@ -96,7 +96,7 @@ public class ServiceLayerImpl implements ServiceLayer {
     @Override
     public Transaction matchOrders(int givenOrderId) {
         Order givenOrder = orders.getOne(givenOrderId);
-        
+
         Order createdOrder = new Order();
 
         createdOrder.setSide(!givenOrder.isSide());
@@ -105,21 +105,21 @@ public class ServiceLayerImpl implements ServiceLayer {
         createdOrder.setSymbol(givenOrder.getSymbol());
         createdOrder.setTime(LocalDateTime.now());
         createdOrder.setOfferPrice(givenOrder.getOfferPrice());
-        
+
         createdOrder = orders.save(createdOrder);
-        
+
         givenOrder.setActive(false);
-        
+
         givenOrder = orders.save(givenOrder);
-        
+
         Transaction transaction = new Transaction();
-        
+
         if (givenOrder.isSide()) {
             transaction = makeTransaction(givenOrder, createdOrder);
         } else {
             transaction = makeTransaction(createdOrder, givenOrder);
         }
-        
+
         return transaction;
     }
 
@@ -141,12 +141,15 @@ public class ServiceLayerImpl implements ServiceLayer {
     public void findPotentialTransactions(String symbol) {
         List<Order> buyOrders = orders.findAllBuyOrdersForSymbol(symbol);
         List<Order> sellOrders = orders.findAllSellOrdersForSymbol(symbol);
-        
-        for (Order buyOrder : buyOrders) {
-            for (Order sellOrder : sellOrders) {
-                if (sellOrder.getOfferPrice().compareTo(buyOrder.getOfferPrice()) <= 0 ) {
-                    makeTransaction(buyOrder, sellOrder);
-                }
+
+        boolean doneMatching = false;
+        while (!doneMatching) {
+            if (sellOrders.get(0).getOfferPrice().compareTo(buyOrders.get(0).getOfferPrice()) <= 0) {
+                makeTransaction(buyOrders.get(0), sellOrders.get(0));
+                buyOrders = orders.findAllBuyOrdersForSymbol(symbol);
+                sellOrders = orders.findAllSellOrdersForSymbol(symbol);
+            } else {
+                doneMatching = true;
             }
         }
     }
