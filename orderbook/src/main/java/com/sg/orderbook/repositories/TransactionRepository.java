@@ -20,7 +20,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Integer>{
     
-    List <Transaction> findBySymbol(String symbol);
+    List <Transaction> findByFinalSymbol(String symbol);
     
     List <Transaction> findByFinalTime(LocalDateTime finalTime);
     
