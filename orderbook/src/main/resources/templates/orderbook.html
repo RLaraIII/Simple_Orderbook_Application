@@ -65,12 +65,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr th:each="order : ${buyOrders}" th:object="${order}">
+                                    <tr th:each="order, iStat : ${buyOrders}" th:object="${order}">
                                         <td th:text="${order.time}">Order Time</td>
                                         <td th:text="${order.id}">Order Id</td>
                                         <td th:text="${order.size}">Order size</td>
                                         <td th:text="${order.offerPrice}">Order bid</td>
-                                        <td>match </td>
+                                        <td><span th:style="${!iStat.first}? 'display: none;'">Match</span></td>
                                         <td>Delete </td>
                                     </tr>
                                 </tbody>

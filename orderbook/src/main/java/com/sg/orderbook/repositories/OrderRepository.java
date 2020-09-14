@@ -21,9 +21,9 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     @Query("SELECT o FROM Order o WHERE o.size > 0")
     List<Order> findAllActiveOrders();
     
-    @Query("SELECT o FROM Order o WHERE o.side = 1 AND o.size > 0 AND o.symbol = :symbol ORDER BY o.offerPrice DESC")
+    @Query("SELECT o FROM Order o WHERE o.side = 1 AND o.size > 0 AND o.symbol = :symbol ORDER BY o.offerPrice DESC, time ASC")
     List<Order> findAllBuyOrdersForSymbol(@Param("symbol") String symbol);
     
-    @Query("SELECT o FROM Order o WHERE o.side = 0 AND o.size > 0 AND o.symbol = :symbol ORDER BY o.offerPrice ASC")
+    @Query("SELECT o FROM Order o WHERE o.side = 0 AND o.size > 0 AND o.symbol = :symbol ORDER BY o.offerPrice ASC, time ASC")
     List<Order> findAllSellOrdersForSymbol(@Param("symbol") String symbol);
 }
