@@ -64,6 +64,11 @@ public class MainController {
     public String transactionsBySymbol(HttpServletRequest request, Model model) {
         String symbol = "GOOG";
         List<Transaction> transactions = service.getAllTransactionsForSymbol(symbol);
+        System.out.println(transactions.size());
+        System.out.println("==================================================");
+        System.out.println("==================================================");
+        System.out.println("==================================================");
+        
         model.addAttribute("transactions", transactions);
         return "history";
     }
