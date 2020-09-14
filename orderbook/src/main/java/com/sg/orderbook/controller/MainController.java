@@ -53,14 +53,14 @@ public class MainController {
 //        return "orderbook";
 //    }
 
-    @GetMapping("/tradehistory")
-    public String allTransactions(Model model) {
-        List<Transaction> transactions = service.getAllTransactionsForSymbol("GOOG");
-        model.addAttribute("transactions", transactions);
-        return "history";
-    }
+//    @GetMapping("/tradehistory")
+//    public String allTransactions(Model model) {
+//        List<Transaction> transactions = service.getAllTransactionsForSymbol("GOOG");
+//        model.addAttribute("transactions", transactions);
+//        return "history";
+//    }
 
-    @GetMapping("/tradeHistoryForSymbol")
+    @GetMapping("/tradehistory")
     public String transactionsBySymbol(HttpServletRequest request, Model model) {
         String symbol = "GOOG";
         List<Transaction> transactions = service.getAllTransactionsForSymbol(symbol);
