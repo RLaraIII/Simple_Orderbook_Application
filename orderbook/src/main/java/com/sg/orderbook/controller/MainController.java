@@ -37,9 +37,10 @@ public class MainController {
     ServiceLayer service;
 
     @GetMapping("/buyOrders")
-    public String buyOrders(Model model) {
-        List<Order> buyOrders = service.getAllBuyOrders();
-        List<Order> sellOrders = service.getAllSellOrders();
+    public String buyOrders(HttpServletRequest request, Model model) {
+        String symbol = request.getParameter("symbol");
+        List<Order> buyOrders = service.getAllBuyOrdersForSymbol(symbol);
+        List<Order> sellOrders = service.getAllSellOrdersForSymbol(symbol);
         
         model.addAttribute("buyOrders", buyOrders);
         model.addAttribute("sellOrders", sellOrders);
@@ -47,8 +48,9 @@ public class MainController {
     }
 
     @GetMapping("/sellOrders")
-    public String sellOrders(Model model) {
-        List<Order> orders = service.getAllSellOrders();
+    public String sellOrders(HttpServletRequest request, Model model) {
+        String symbol = request.getParameter("symbol");
+        List<Order> orders = service.getAllSellOrdersForSymbol(symbol);
         model.addAttribute("orders", orders);
         return "orderbook";
     }

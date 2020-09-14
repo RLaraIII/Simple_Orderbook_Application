@@ -90,7 +90,7 @@ public class ServiceLayerTest {
         secondOrder.setSize(0);
         secondOrder.setSymbol("APPL");
         secondOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
-        
+
         secondOrder = orders.save(secondOrder);
 
         Order gotFirstOrder = orders.findById(firstOrder.getId()).orElse(null);
@@ -131,7 +131,7 @@ public class ServiceLayerTest {
         // Retrieve orders, list of buy orders
         Order gotBuyOrder = orders.findById(buyOrder.getId()).orElse(null);
         Order gotSellOrder = orders.findById(sellOrder.getId()).orElse(null);
-        List<Order> gotBuyOrders = service.getAllBuyOrders();
+        List<Order> gotBuyOrders = service.getAllBuyOrdersForSymbol(buyOrder.getSymbol());
 
         // Assert
         assertEquals(buyOrder, gotBuyOrder);
@@ -170,7 +170,7 @@ public class ServiceLayerTest {
         // Retrieve orders, list of sell orders
         Order gotBuyOrder = orders.findById(buyOrder.getId()).orElse(null);
         Order gotSellOrder = orders.findById(sellOrder.getId()).orElse(null);
-        List<Order> gotSellOrders = service.getAllSellOrders();
+        List<Order> gotSellOrders = service.getAllSellOrdersForSymbol(sellOrder.getSymbol());
 
         // Assert
         assertEquals(buyOrder, gotBuyOrder);
@@ -304,7 +304,7 @@ public class ServiceLayerTest {
         order = orders.save(order);
 
         Order gotOrder = orders.findById(order.getId()).orElse(null);
-        
+
         assertNotNull(gotOrder);
 
         orders.deleteById(gotOrder.getId());
@@ -356,17 +356,97 @@ public class ServiceLayerTest {
         firstOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
 
         firstOrder = orders.save(firstOrder);
-        
+
         Transaction transaction = service.matchOrders(firstOrder.getId());
-        Order secondOrder = firstOrder.isSide() 
-                ? transaction.getSellOrder() 
+        Order secondOrder = firstOrder.isSide()
+                ? transaction.getSellOrder()
                 : transaction.getBuyOrder();
-        
+
         assertNotNull(secondOrder);
         assertEquals(1, transactions.findAll().size());
         assertEquals(firstOrder.getOfferPrice(), secondOrder.getOfferPrice());
         assertEquals(firstOrder.getSymbol(), secondOrder.getSymbol());
         assertNotEquals(firstOrder.isSide(), secondOrder.isSide());
+    }
+
+    @Test
+    public void testFindPotentialTransactions() {
+//        BUY ORDERS
+        Order firstBuyOrder = new Order();
+
+        firstBuyOrder.setActive(true);
+        firstBuyOrder.setOfferPrice(new BigDecimal("576.52").setScale(2, RoundingMode.HALF_UP));
+        firstBuyOrder.setSide(true);
+        firstBuyOrder.setSize(10);
+        firstBuyOrder.setSymbol("GOOG");
+        firstBuyOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
+
+        firstBuyOrder = orders.save(firstBuyOrder);
+        
+        Order secondBuyOrder = new Order();
+
+        secondBuyOrder.setActive(true);
+        secondBuyOrder.setOfferPrice(new BigDecimal("576.40").setScale(2, RoundingMode.HALF_UP));
+        secondBuyOrder.setSide(true);
+        secondBuyOrder.setSize(10);
+        secondBuyOrder.setSymbol("GOOG");
+        secondBuyOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
+
+        secondBuyOrder = orders.save(secondBuyOrder);
+        
+        Order thirdBuyOrder = new Order();
+
+        thirdBuyOrder.setActive(true);
+        thirdBuyOrder.setOfferPrice(new BigDecimal("576.37").setScale(2, RoundingMode.HALF_UP));
+        thirdBuyOrder.setSide(true);
+        thirdBuyOrder.setSize(10);
+        thirdBuyOrder.setSymbol("GOOG");
+        thirdBuyOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
+
+        thirdBuyOrder = orders.save(thirdBuyOrder);
+        
+//        SELL ORDERS
+        Order firstSellOrder = new Order();
+
+        firstSellOrder.setActive(true);
+        firstSellOrder.setOfferPrice(new BigDecimal("576.42").setScale(2, RoundingMode.HALF_UP));
+        firstSellOrder.setSide(true);
+        firstSellOrder.setSize(10);
+        firstSellOrder.setSymbol("GOOG");
+        firstSellOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
+
+        firstSellOrder = orders.save(firstSellOrder);
+        
+        Order secondSellOrder = new Order();
+
+        secondSellOrder.setActive(true);
+        secondSellOrder.setOfferPrice(new BigDecimal("576.58").setScale(2, RoundingMode.HALF_UP));
+        secondSellOrder.setSide(true);
+        secondSellOrder.setSize(10);
+        secondSellOrder.setSymbol("GOOG");
+        secondSellOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
+
+        secondSellOrder = orders.save(secondSellOrder);
+        
+        Order thirdSellOrder = new Order();
+
+        thirdSellOrder.setActive(true);
+        thirdSellOrder.setOfferPrice(new BigDecimal("576.67").setScale(2, RoundingMode.HALF_UP));
+        thirdSellOrder.setSide(true);
+        thirdSellOrder.setSize(10);
+        thirdSellOrder.setSymbol("GOOG");
+        thirdSellOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
+
+        thirdSellOrder = orders.save(thirdBuyOrder);
+        
+        service.findPotentialTransactions(firstBuyOrder.getSymbol());
+        List<Transaction> transactionsForGoog = transactions.findByFinalSymbol(firstBuyOrder.getSymbol());
+        
+        assertEquals(1, transactionsForGoog.size());
+        assertEquals(firstBuyOrder, transactionsForGoog.get(0).getBuyOrder());
+        assertEquals(firstSellOrder, transactionsForGoog.get(0).getSellOrder());
+        assertEquals(0, transactionsForGoog.get(0).getBuyOrder().getSize());
+        assertEquals(0, transactionsForGoog.get(0).getSellOrder().getSize());
     }
 
 }

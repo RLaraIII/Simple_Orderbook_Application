@@ -30,12 +30,12 @@ public class ServiceLayerImpl implements ServiceLayer {
 
     @Override
     public List<Order> getAllBuyOrdersForSymbol(String symbol) {
-        return orders.findAllBuyOrders();
+        return orders.findAllBuyOrdersForSymbol(symbol);
     }
 
     @Override
     public List<Order> getAllSellOrdersForSymbol(String symbol) {
-        return orders.findAllSellOrders();
+        return orders.findAllSellOrdersForSymbol(symbol);
     }
 
     // get list of transactions stored in transaction database table
@@ -91,12 +91,6 @@ public class ServiceLayerImpl implements ServiceLayer {
         
         return newTransaction;
     }
-    
-//    // Compare the buy and sell order offer prices; if buy order price is greater than or equal to the sell order price, returns true (vlid match)-else false (not a match)
-//
-//        return transactions.save(newTransaction);
-//
-//    }
 
     // Compare the buy and sell order offer prices; if buy order price is greater than or equal to the sell order price, returns true (vlid match)-else false (not a match)
     @Override
@@ -145,7 +139,16 @@ public class ServiceLayerImpl implements ServiceLayer {
 
     @Override
     public void findPotentialTransactions(String symbol) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Order> buyOrders = orders.findAllBuyOrdersForSymbol(symbol);
+        List<Order> sellOrders = orders.findAllSellOrdersForSymbol(symbol);
+        
+        for (Order buyOrder : buyOrders) {
+            for (Order sellOrder : sellOrders) {
+                if (sellOrder.getOfferPrice().compareTo(buyOrder.getOfferPrice()) <= 0 ) {
+                    makeTransaction(buyOrder, sellOrder);
+                }
+            }
+        }
     }
 
 }
