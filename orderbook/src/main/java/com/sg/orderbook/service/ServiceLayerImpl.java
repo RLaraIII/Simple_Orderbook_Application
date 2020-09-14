@@ -29,12 +29,12 @@ public class ServiceLayerImpl implements ServiceLayer {
     TransactionRepository transactions;
 
     @Override
-    public List<Order> getAllBuyOrders() {
+    public List<Order> getAllBuyOrdersForSymbol(String symbol) {
         return orders.findAllBuyOrders();
     }
 
     @Override
-    public List<Order> getAllSellOrders() {
+    public List<Order> getAllSellOrdersForSymbol(String symbol) {
         return orders.findAllSellOrders();
     }
 
@@ -141,6 +141,11 @@ public class ServiceLayerImpl implements ServiceLayer {
                 && transactionList.isEmpty()) {
             orders.deleteById(order.getId());
         }
+    }
+
+    @Override
+    public void findPotentialTransactions(String symbol) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
