@@ -65,7 +65,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr th:each="order : ${orderList}" th:object="${order}" th:if="${order.side} == '1'">
+                                    <tr th:each="order : ${buyOrders}" th:object="${order}">
                                         <td th:text="${order.time}">Order Time</td>
                                         <td th:text="${order.id}">Order Id</td>
                                         <td th:text="${order.size}">Order size</td>
@@ -89,7 +89,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr th:each="order : ${orderList}" th:object="${order}" th:if="${order.side} == '0'">
+                                    <tr th:each="order : ${sellOrders}" th:object="${order}">
                                         <td th:text="${order.time}">Order Time</td>
                                         <td th:text="${order.id}">Order Id</td>
                                         <td th:text="${order.size}">Order size</td>

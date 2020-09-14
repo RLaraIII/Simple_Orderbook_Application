@@ -49,16 +49,9 @@ public class ServiceLayerImpl implements ServiceLayer {
     @Override
     public List<Transaction> getAllTransactionsForSymbol(String symbol) {
         // pull all transactions from database
-        List<Transaction> allTransactions = getAllTransactions();
+        List<Transaction> transactionList = transactions.findByFinalSymbol(symbol);
 
-        // Loop through all transaction and only add it to the returned list if the symbol field equals the given symbol
-        List<Transaction> transactionsForSymbol = new ArrayList<>();
-        for (Transaction transaction : allTransactions) {
-            if (transaction.getFinalSymbol().equalsIgnoreCase(symbol)) {
-                transactionsForSymbol.add(transaction);
-            }
-        }
-        return transactionsForSymbol;
+        return transactionList;
     }
 
     // Create new transaction and save it to transaction database table; pull info from buy order

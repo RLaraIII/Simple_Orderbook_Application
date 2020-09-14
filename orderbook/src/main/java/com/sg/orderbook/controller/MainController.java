@@ -38,7 +38,7 @@ public class MainController {
 
     @GetMapping("/orderbook")
     public String viewOrderbook(HttpServletRequest request, Model model) {
-        String symbol = request.getParameter("symbol");
+        String symbol = "GOOG";
         List<Order> buyOrders = service.getAllBuyOrdersForSymbol(symbol);
         List<Order> sellOrders = service.getAllSellOrdersForSymbol(symbol);
         
@@ -57,17 +57,17 @@ public class MainController {
 
     @GetMapping("/tradehistory")
     public String allTransactions(Model model) {
-        List<Transaction> transactions = service.getAllTransactions();
+        List<Transaction> transactions = service.getAllTransactionsForSymbol("GOOG");
         model.addAttribute("transactions", transactions);
-        return "redirect:/history";
+        return "history";
     }
 
     @GetMapping("/tradeHistoryForSymbol")
     public String transactionsBySymbol(HttpServletRequest request, Model model) {
-        String symbol = request.getParameter("symbol");
+        String symbol = "GOOG";
         List<Transaction> transactions = service.getAllTransactionsForSymbol(symbol);
         model.addAttribute("transactions", transactions);
-        return "redirect:/history";
+        return "history";
     }
 
     @GetMapping("deleteOrder")
