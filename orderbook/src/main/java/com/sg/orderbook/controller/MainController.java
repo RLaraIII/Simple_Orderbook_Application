@@ -34,12 +34,16 @@ public class MainController {
 
     @GetMapping("/orderbook")
     public String viewOrderbook(HttpServletRequest request, Model model) {
-        String symbol = "GOOG";
+        String symbol = request.getParameter("symbol");
+        
+        if (symbol == null) return "redirect:/";
+        
         service.findPotentialTransactions(symbol);
         
         List<Order> buyOrders = service.getAllBuyOrdersForSymbol(symbol);
         List<Order> sellOrders = service.getAllSellOrdersForSymbol(symbol);
         
+        model.addAttribute("symbol", symbol);
         model.addAttribute("buyOrders", buyOrders);
         model.addAttribute("sellOrders", sellOrders);
         return "orderbook";
