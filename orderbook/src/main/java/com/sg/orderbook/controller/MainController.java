@@ -76,18 +76,18 @@ public class MainController {
         return "history";
     }
 
-    @GetMapping("deleteOrder")
+    @GetMapping("/deleteOrder")
     public String deleteOrder(HttpServletRequest request) {
-        int id = Integer.parseInt(request.getParameter("id"));
-        service.deleteUnmatchedOrder(id);
-        return "orderbook";
+        int orderId = Integer.parseInt(request.getParameter("id"));
+        service.deleteUnmatchedOrder(orderId);
+        return "redirect:/orderbook";
     }
 
-    @GetMapping("matchOrder")
-    public String matchOrder(HttpServletRequest request) {
-        int id = Integer.parseInt(request.getParameter("id"));
-        service.matchOrders(id);
-        return "orderbook";
+    @GetMapping("matchorder")
+    public String matchOrder(Integer orderId) {
+        System.out.println(orderId);
+        service.matchOrders(orderId);
+        return "redirect:/orderbook";
     }
 
 }

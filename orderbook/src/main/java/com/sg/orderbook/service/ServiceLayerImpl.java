@@ -64,22 +64,23 @@ public class ServiceLayerImpl implements ServiceLayer {
 
         // Create and fill a new transaction
         Transaction newTransaction = new Transaction();
-        newTransaction.setBuyOrder(buyOrder);
-        newTransaction.setSellOrder(sellOrder);
         newTransaction.setFinalSymbol(buyOrder.getSymbol());
         newTransaction.setFinalPrice(buyOrder.getOfferPrice());
         newTransaction.setFinalTime(now);
 
         boolean buySizeBigger = buyOrder.getSize() >= sellOrder.getSize();
 
-        newTransaction.setAmount(buySizeBigger ? buyOrder.getSize() - sellOrder.getSize()
-                : sellOrder.getSize() - buyOrder.getSize());
+        newTransaction.setAmount(buySizeBigger ? sellOrder.getSize()
+                : buyOrder.getSize());
 
-        buyOrder.setSize(buySizeBigger ? buyOrder.getSize() - newTransaction.getSellOrder().getSize() : 0);
-        sellOrder.setSize(buySizeBigger ? 0 : sellOrder.getSize() - newTransaction.getBuyOrder().getSize());
+        buyOrder.setSize(buySizeBigger ? buyOrder.getSize() - sellOrder.getSize() : 0);
+        sellOrder.setSize(buySizeBigger ? 0 : sellOrder.getSize() - buyOrder.getSize());
 
         buyOrder = orders.save(buyOrder);
         sellOrder = orders.save(sellOrder);
+        newTransaction.setBuyOrder(buyOrder);
+        newTransaction.setSellOrder(sellOrder);
+        
         newTransaction = transactions.save(newTransaction);
 
         return newTransaction;
@@ -118,11 +119,12 @@ public class ServiceLayerImpl implements ServiceLayer {
 
     @Override
     public void deleteUnmatchedOrder(int orderId) {
-        Order order = orders.getOne(orderId);
+        //Order order = orders.getOne(orderId);
+        Order order = orders.findById(orderId).orElse(null);
 
         // Attempts to delete an order from the db if and the order is active and
         // there exists no transactions that use said order
-        List transactionList = transactions.findAllTransactionsForOrder(order.getId());
+        List transactionList = transactions.findAllTransactionsForOrder(order);
 
         if (order.getSize() > 0) {
             
@@ -132,9 +134,7 @@ public class ServiceLayerImpl implements ServiceLayer {
                 order.setSize(0);
                 order.setActive(false);
                 orders.save(order);
-            }
-            
-            
+            }   
         }
     }
 
