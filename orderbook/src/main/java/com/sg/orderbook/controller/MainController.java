@@ -29,8 +29,6 @@ public class MainController {
     // matchOrder() <-- either bring size of order to 0
     // checks to see if it is possible to 
     // deleteOrder() <-- deletes order from order table
-
-
     @Autowired
     ServiceLayer service;
 
@@ -39,7 +37,7 @@ public class MainController {
         String symbol = "GOOG";
         List<Order> buyOrders = service.getAllBuyOrdersForSymbol(symbol);
         List<Order> sellOrders = service.getAllSellOrdersForSymbol(symbol);
-        
+
         model.addAttribute("buyOrders", buyOrders);
         model.addAttribute("sellOrders", sellOrders);
         return "orderbook";
@@ -52,14 +50,12 @@ public class MainController {
 //        model.addAttribute("orders", orders);
 //        return "orderbook";
 //    }
-
 //    @GetMapping("/tradehistory")
 //    public String allTransactions(Model model) {
 //        List<Transaction> transactions = service.getAllTransactionsForSymbol("GOOG");
 //        model.addAttribute("transactions", transactions);
 //        return "history";
 //    }
-
     @GetMapping("/tradehistory")
     public String transactionsBySymbol(HttpServletRequest request, Model model) {
         String symbol = "GOOG";
@@ -69,14 +65,14 @@ public class MainController {
         return "history";
     }
 
-    @GetMapping("deleteOrder")
+    @GetMapping("/deleteOrder")
     public String deleteOrder(HttpServletRequest request) {
-        int id = Integer.parseInt(request.getParameter("id"));
-        service.deleteUnmatchedOrder(id);
-        return "orderbook";
+        int orderId = Integer.parseInt(request.getParameter("id"));
+        service.deleteUnmatchedOrder(orderId);
+        return "redirect:/orderbook";
     }
 
-    @GetMapping("matchOrder")
+    @GetMapping("/matchOrder")
     public String matchOrder(HttpServletRequest request) {
         int id = Integer.parseInt(request.getParameter("id"));
         service.matchOrders(id);

@@ -65,7 +65,7 @@
                                 <tbody>
                                     <tr th:each="order, iStat : ${buyOrders}" th:object="${order}">
 
-                                        <td>Delete </td>
+                                        <td><a href="#" th:href="@{/deleteOrder(id=${order.id})}">Delete</a></td>
                                         <td th:text="${#temporals.format(order.time, 'dd-MM-yyyy HH:mm:ss')}">Order Time</td>
                                         <td th:text="${order.size}">Order size</td>
                                         <td th:text="${order.offerPrice}">Order bid</td>
@@ -93,7 +93,7 @@
                                         <td th:text="${order.offerPrice}">Order Ask</td>
                                         <td th:text="${order.size}">Order size</td>
                                         <td th:text="${#temporals.format(order.time, 'dd-MM-yyyy HH:mm:ss')}">Order Time</td>
-                                        <td>Delete</td>
+                                        <td><a href="#" th:href="@{/deleteOrder(id=${order.id})}">Delete</a></td>
                                     </tr>
                                 </tbody>
                             </table>

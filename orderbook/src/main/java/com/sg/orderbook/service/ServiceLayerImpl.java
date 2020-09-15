@@ -118,11 +118,12 @@ public class ServiceLayerImpl implements ServiceLayer {
 
     @Override
     public void deleteUnmatchedOrder(int orderId) {
-        Order order = orders.getOne(orderId);
+        //Order order = orders.getOne(orderId);
+        Order order = orders.findById(orderId).orElse(null);
 
         // Attempts to delete an order from the db if and the order is active and
         // there exists no transactions that use said order
-        List transactionList = transactions.findAllTransactionsForOrder(order.getId());
+        List transactionList = transactions.findAllTransactionsForOrder(order);
 
         if (order.getSize() > 0) {
             
@@ -132,9 +133,7 @@ public class ServiceLayerImpl implements ServiceLayer {
                 order.setSize(0);
                 order.setActive(false);
                 orders.save(order);
-            }
-            
-            
+            }   
         }
     }
 
