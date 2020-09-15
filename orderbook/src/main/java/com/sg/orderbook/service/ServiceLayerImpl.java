@@ -64,22 +64,23 @@ public class ServiceLayerImpl implements ServiceLayer {
 
         // Create and fill a new transaction
         Transaction newTransaction = new Transaction();
-        newTransaction.setBuyOrder(buyOrder);
-        newTransaction.setSellOrder(sellOrder);
         newTransaction.setFinalSymbol(buyOrder.getSymbol());
         newTransaction.setFinalPrice(buyOrder.getOfferPrice());
         newTransaction.setFinalTime(now);
 
         boolean buySizeBigger = buyOrder.getSize() >= sellOrder.getSize();
 
-        newTransaction.setAmount(buySizeBigger ? buyOrder.getSize() - sellOrder.getSize()
-                : sellOrder.getSize() - buyOrder.getSize());
+        newTransaction.setAmount(buySizeBigger ? sellOrder.getSize()
+                : buyOrder.getSize());
 
-        buyOrder.setSize(buySizeBigger ? buyOrder.getSize() - newTransaction.getSellOrder().getSize() : 0);
-        sellOrder.setSize(buySizeBigger ? 0 : sellOrder.getSize() - newTransaction.getBuyOrder().getSize());
+        buyOrder.setSize(buySizeBigger ? buyOrder.getSize() - sellOrder.getSize() : 0);
+        sellOrder.setSize(buySizeBigger ? 0 : sellOrder.getSize() - buyOrder.getSize());
 
         buyOrder = orders.save(buyOrder);
         sellOrder = orders.save(sellOrder);
+        newTransaction.setBuyOrder(buyOrder);
+        newTransaction.setSellOrder(sellOrder);
+        
         newTransaction = transactions.save(newTransaction);
 
         return newTransaction;
