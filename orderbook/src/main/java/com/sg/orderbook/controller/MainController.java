@@ -29,17 +29,26 @@ public class MainController {
     // matchOrder() <-- either bring size of order to 0
     // checks to see if it is possible to 
     // deleteOrder() <-- deletes order from order table
-
-
     @Autowired
     ServiceLayer service;
 
+//    @GetMapping("/orderbook")
+//    public String viewOrderbook(HttpServletRequest request, Model model) {
+//        String symbol = "GOOG";
+//        List<Order> buyOrders = service.getAllBuyOrdersForSymbol(symbol);
+//        List<Order> sellOrders = service.getAllSellOrdersForSymbol(symbol);
+//
+//        model.addAttribute("buyOrders", buyOrders);
+//        model.addAttribute("sellOrders", sellOrders);
+//        return "orderbook";
+//    }
+
     @GetMapping("/orderbook")
-    public String viewOrderbook(HttpServletRequest request, Model model) {
-        String symbol = "GOOG";
+    public String viewOrderbook(String symbol, Model model) {
+        service.findPotentialTransactions("GOOG");
         List<Order> buyOrders = service.getAllBuyOrdersForSymbol(symbol);
         List<Order> sellOrders = service.getAllSellOrdersForSymbol(symbol);
-        
+
         model.addAttribute("buyOrders", buyOrders);
         model.addAttribute("sellOrders", sellOrders);
         return "orderbook";
@@ -52,14 +61,12 @@ public class MainController {
 //        model.addAttribute("orders", orders);
 //        return "orderbook";
 //    }
-
 //    @GetMapping("/tradehistory")
 //    public String allTransactions(Model model) {
 //        List<Transaction> transactions = service.getAllTransactionsForSymbol("GOOG");
 //        model.addAttribute("transactions", transactions);
 //        return "history";
 //    }
-
     @GetMapping("/tradehistory")
     public String transactionsBySymbol(HttpServletRequest request, Model model) {
         String symbol = "GOOG";
