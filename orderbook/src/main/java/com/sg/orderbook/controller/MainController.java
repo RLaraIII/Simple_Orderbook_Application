@@ -35,21 +35,16 @@ public class MainController {
     @GetMapping("/orderbook")
     public String viewOrderbook(HttpServletRequest request, Model model) {
         String symbol = "GOOG";
+        service.findPotentialTransactions(symbol);
+        
         List<Order> buyOrders = service.getAllBuyOrdersForSymbol(symbol);
         List<Order> sellOrders = service.getAllSellOrdersForSymbol(symbol);
-
+        
         model.addAttribute("buyOrders", buyOrders);
         model.addAttribute("sellOrders", sellOrders);
         return "orderbook";
     }
 
-//    @GetMapping("/sellOrders")
-//    public String sellOrders(HttpServletRequest request, Model model) {
-//        String symbol = request.getParameter("symbol");
-//        List<Order> orders = service.getAllSellOrdersForSymbol(symbol);
-//        model.addAttribute("orders", orders);
-//        return "orderbook";
-//    }
 //    @GetMapping("/tradehistory")
 //    public String allTransactions(Model model) {
 //        List<Transaction> transactions = service.getAllTransactionsForSymbol("GOOG");
