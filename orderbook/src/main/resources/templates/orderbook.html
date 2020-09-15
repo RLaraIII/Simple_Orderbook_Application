@@ -66,7 +66,7 @@
                                     <tr th:each="order, iStat : ${buyOrders}" th:object="${order}">
 
                                         <td>Delete </td>
-                                        <td th:text="${order.time}">Order Time</td>
+                                        <td th:text="${#temporals.format(order.time, 'dd-MM-yyyy HH:mm:ss')}">Order Time</td>
                                         <td th:text="${order.size}">Order size</td>
                                         <td th:text="${order.offerPrice}">Order bid</td>
                                         <td><span th:style="${!iStat.first}? 'display: none;'">Match</span></td>
@@ -92,7 +92,7 @@
                                         <td><span th:style="${!iStat.first}? 'display: none;'">Match</span></td>
                                         <td th:text="${order.offerPrice}">Order Ask</td>
                                         <td th:text="${order.size}">Order size</td>
-                                        <td th:text="${order.time}">Order Time</td>
+                                        <td th:text="${#temporals.format(order.time, 'dd-MM-yyyy HH:mm:ss')}">Order Time</td>
                                         <td>Delete</td>
                                     </tr>
                                 </tbody>
