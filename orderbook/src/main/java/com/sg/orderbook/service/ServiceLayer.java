@@ -34,4 +34,6 @@ public interface ServiceLayer {
     public Transaction matchOrders(int givenOrderId);
     
     public void findPotentialTransactions(String symbol);
+    
+    public List getSymbols();
 }

@@ -31,6 +31,14 @@ public class MainController {
     // deleteOrder() <-- deletes order from order table
     @Autowired
     ServiceLayer service;
+    
+    @GetMapping("/")
+    public String viewIndex(HttpServletRequest request, Model model) {
+        model.addAttribute("symbols", service.getSymbols());
+        
+        
+        return "index";
+    }
 
     @GetMapping("/orderbook")
     public String viewOrderbook(HttpServletRequest request, Model model) {

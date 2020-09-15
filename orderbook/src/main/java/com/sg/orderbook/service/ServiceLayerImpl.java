@@ -155,4 +155,8 @@ public class ServiceLayerImpl implements ServiceLayer {
         }
     }
 
+    @Override
+    public List getSymbols() {
+        return orders.getSymbols();
+    }
 }

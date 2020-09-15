@@ -448,5 +448,45 @@ public class ServiceLayerTest {
         assertEquals(0, transactionsForGoog.get(0).getBuyOrder().getSize());
         assertEquals(0, transactionsForGoog.get(0).getSellOrder().getSize());
     }
+    
+    @Test
+    public void testGetSymbols() {
+        Order firstBuyOrder = new Order();
+
+        firstBuyOrder.setActive(true);
+        firstBuyOrder.setOfferPrice(new BigDecimal("576.52").setScale(2, RoundingMode.HALF_UP));
+        firstBuyOrder.setSide(true);
+        firstBuyOrder.setSize(10);
+        firstBuyOrder.setSymbol("GOOG");
+        firstBuyOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
+
+        firstBuyOrder = orders.save(firstBuyOrder);
+        
+        Order secondBuyOrder = new Order();
+
+        secondBuyOrder.setActive(true);
+        secondBuyOrder.setOfferPrice(new BigDecimal("576.40").setScale(2, RoundingMode.HALF_UP));
+        secondBuyOrder.setSide(true);
+        secondBuyOrder.setSize(10);
+        secondBuyOrder.setSymbol("AAPL");
+        secondBuyOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
+
+        secondBuyOrder = orders.save(secondBuyOrder);
+        
+        Order thirdBuyOrder = new Order();
+
+        thirdBuyOrder.setActive(true);
+        thirdBuyOrder.setOfferPrice(new BigDecimal("576.37").setScale(2, RoundingMode.HALF_UP));
+        thirdBuyOrder.setSide(true);
+        thirdBuyOrder.setSize(10);
+        thirdBuyOrder.setSymbol("MSFT");
+        thirdBuyOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
+
+        thirdBuyOrder = orders.save(thirdBuyOrder);
+        
+        List<String> symbols = service.getSymbols();
+
+        assertEquals(3, symbols.size());
+    }
 
 }
