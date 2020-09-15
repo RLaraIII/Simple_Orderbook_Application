@@ -76,11 +76,11 @@ public class MainController {
         return "orderbook";
     }
 
-    @GetMapping("matchOrder")
-    public String matchOrder(HttpServletRequest request) {
-        int id = Integer.parseInt(request.getParameter("id"));
-        service.matchOrders(id);
-        return "orderbook";
+    @GetMapping("matchorder")
+    public String matchOrder(Integer orderId) {
+        System.out.println(orderId);
+        service.matchOrders(orderId);
+        return "redirect:/orderbook";
     }
 
 }
