@@ -48,8 +48,6 @@ public class MainController {
             return "redirect:/";
         }
 
-        service.findPotentialTransactions(symbol);
-
         List<Order> buyOrders = service.getAllBuyOrdersForSymbol(symbol);
         List<Order> sellOrders = service.getAllSellOrdersForSymbol(symbol);
 
