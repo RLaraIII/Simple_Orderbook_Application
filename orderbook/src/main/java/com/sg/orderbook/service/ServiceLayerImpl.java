@@ -72,8 +72,11 @@ public class ServiceLayerImpl implements ServiceLayer {
         newTransaction.setAmount(buySizeBigger ? sellOrder.getSize()
                 : buyOrder.getSize());
 
-        buyOrder.setSize(buySizeBigger ? buyOrder.getSize() - sellOrder.getSize() : 0);
-        sellOrder.setSize(buySizeBigger ? 0 : sellOrder.getSize() - buyOrder.getSize());
+        int buyOrderSize = buyOrder.getSize();
+        int sellOrderSize = sellOrder.getSize();
+        
+        buyOrder.setSize(buySizeBigger ? buyOrderSize - sellOrderSize : 0);
+        sellOrder.setSize(buySizeBigger ? 0 : sellOrderSize - buyOrderSize);
 
         buyOrder = orders.save(buyOrder);
         sellOrder = orders.save(sellOrder);
