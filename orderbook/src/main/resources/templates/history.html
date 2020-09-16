@@ -24,9 +24,16 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/orderbook?symbol=GOOG">View a Tradebook</a>
+                    <!--Dropdown-->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            View a Tradebook
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown" th:each="sym : ${symbols}" th:object="${sym}" >
+                            <a class="dropdown-item" th:href="@{orderbook(symbol=${sym})}" th:text="${sym}">Action</a>
+                        </div>
                     </li>
+                    <!--End dropdown-->
 
                     <li class="nav-item">
                         <a class="nav-link" href="/tradehistory?symbol=GOOG">View History</a>

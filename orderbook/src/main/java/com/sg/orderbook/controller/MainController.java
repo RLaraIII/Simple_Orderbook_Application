@@ -52,6 +52,7 @@ public class MainController {
         List<Order> sellOrders = service.getAllSellOrdersForSymbol(symbol);
 
         model.addAttribute("symbol", symbol);
+        model.addAttribute("symbols", service.getSymbols());
         model.addAttribute("buyOrders", buyOrders);
         model.addAttribute("sellOrders", sellOrders);
         return "orderbook";
@@ -73,6 +74,7 @@ public class MainController {
 
         List<Transaction> transactions = service.getAllTransactionsForSymbol(symbol);
 
+        model.addAttribute("symbols", service.getSymbols());
         model.addAttribute("transactions", transactions);
         return "history";
     }

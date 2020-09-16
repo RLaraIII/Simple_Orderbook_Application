@@ -24,9 +24,16 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="orderbook?symbol=GOOG">View a Tradebook</a>
+                    <!--Dropdown-->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            View a Tradebook
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown" th:each="sym : ${symbols}" th:object="${sym}" >
+                            <a class="dropdown-item" th:href="@{orderbook(symbol=${sym})}" th:text="${sym}">Action</a>
+                        </div>
                     </li>
+                    <!--End dropdown-->
 
                     <li class="nav-item">
                         <a class="nav-link" href="/tradehistory?symbol=GOOG">View History</a>
@@ -48,44 +55,29 @@
                             <h3 class="text-center">Symbol Activity</h3>
                         </header>
                         <div class="card-body">
-
-<!--                            <tr th:each="order, iStat : ${buyOrders}" th:object="${order}">
-
-                                <td><a class="btn btn-danger btn-sm" th:href="@{/deleteOrder(id=${order.id})}">Delete</a></td>
-                                <td th:text="${#temporals.format(order.time, 'dd-MM-yyyy HH:mm:ss')}">Order Time</td>
-                                <td th:text="${order.size}">Order size</td>
-                                <td th:text="${order.offerPrice}">Order bid</td>
-                                <td><a 
-                                        th:href="@{matchorder(orderId=${order.id})}" 
-                                        class="btn btn-success" 
-                                        th:style="${!iStat.first}? 'display: none;'">Match</a></td>
-                            </tr>-->
-
-                            <!-- First Row of Symbols -->
-                            <div th:each="symbol : ${symbols}" th:object="${symbol}" class="row mb-4">
-                                <div class="col h4" th:text="${symbol}">
+<!--                             First Row of Symbols 
+                            <div th:each="sym : ${symbols}" th:object="${sym}" class="row mb-4">
+                                <div class="col h4" th:text="${sym}">
                                     foo
                                 </div>
-                                <a href="#" th:href="@{orderbook(symbol=${symbol})}" class="col btn btn-success mr-1">View Orderbook</a>
-                                <a href="#" th:href="@{tradehistory(symbol=${symbol})}" class="col btn btn-success">View History</a>
-                            </div>
-
-<!--                             More Symbols 
-                            <div class="row mb-4">
-                                <div class="col h4">
-                                    AAPL
-                                </div>
-                                <button class="col btn btn-success disabled mr-1">View Orderbook</button>
-                                <button class="col btn btn-success disabled">View History</button>
-                            </div>
-
-                            <div class="row mb-4">
-                                <div class="col h4">
-                                    MSFT
-                                </div>
-                                <button class="col btn btn-success disabled mr-1">View Orderbook</button>
-                                <button class="col btn btn-success disabled">View History</button>
+                                <a href="#" th:href="@{orderbook(symbol=${sym})}" class="col btn btn-success mr-1">View Orderbook</a>
+                                <a href="#" th:href="@{tradehistory(symbol=${sym})}" class="col btn btn-success">View History</a>
                             </div>-->
+
+                            <!--Form version-->
+                            <form>
+                                <div class="form-group">
+                                    <label for="orderbookList">View Orderbook or Trade History for a Symbol</label>
+                                    <select class="form-control" id="orderbookList" name="symbol">
+                                        <option th:each="sym : ${symbols}"
+                                                th:object="${sym}"
+                                                th:value="${sym}"
+                                                th:text="${sym}"></option>
+                                    </select>
+                                </div>
+                                <button class="btn btn-primary btn-sm" formaction="orderbook" type="submit">View Orderbook</button>
+                                <button class="btn btn-info btn-sm" formaction="tradehistory" type="submit">View Trade History</button>
+                            </form>
                         </div>
                     </main>
                 </div>
