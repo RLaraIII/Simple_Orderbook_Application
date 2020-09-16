@@ -22,20 +22,34 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="/">Home
-                            <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/orderbook?symbol=GOOG">View a Tradebook</a>
+                        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                     </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="/tradehistory?symbol=GOOG">View History</a>
+                    <!--Dropdown for Orderbook-->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            View an Orderbook
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown" >
+                            <a class="dropdown-item" th:each="sym : ${symbols}" th:object="${sym}" th:href="@{orderbook(symbol=${sym})}" th:text="${sym}">Action</a>
+                        </div>
                     </li>
+                    <!--End dropdown-->
+
+                    <!--Dropdown for Trade History-->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            View Trade History
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown" >
+                            <a class="dropdown-item" th:each="sym : ${symbols}" th:object="${sym}" th:href="@{tradehistory(symbol=${sym})}" th:text="${sym}">Action</a>
+                        </div>
+                    </li>
+                    <!--End dropdown-->
+
                 </ul>
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <form class="form-inline my-2 my-lg-0" action="orderbook">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="symbol">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search a Symbol</button>
                 </form>
             </div>
