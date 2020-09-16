@@ -22,34 +22,20 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-                    </li>
-
-                    <!--Dropdown for Orderbook-->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            View an Orderbook
+                        <a class="nav-link" href="/">Home
+                            <span class="sr-only">(current)</span>
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown" >
-                            <a class="dropdown-item" th:each="sym : ${symbols}" th:object="${sym}" th:href="@{orderbook(symbol=${sym})}" th:text="${sym}">Action</a>
-                        </div>
                     </li>
-                    <!--End dropdown-->
-
-                    <!--Dropdown for Trade History-->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            View Trade History
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown" >
-                            <a class="dropdown-item" th:each="sym : ${symbols}" th:object="${sym}" th:href="@{tradehistory(symbol=${sym})}" th:text="${sym}">Action</a>
-                        </div>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/orderbook?symbol=GOOG">View a Tradebook</a>
                     </li>
-                    <!--End dropdown-->
 
+                    <li class="nav-item">
+                        <a class="nav-link" href="/tradehistory?symbol=GOOG">View History</a>
+                    </li>
                 </ul>
-                <form class="form-inline my-2 my-lg-0" action="orderbook">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="symbol">
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search a Symbol</button>
                 </form>
             </div>
@@ -64,7 +50,20 @@
                             <h3 class="text-center">Orderbook for <span th:text="${symbol}">[SYMBOL]</span> </h3>
                         </header>
                         <!-- Table for Orderbook -->
-                        <div class="row m-4 border border-dark">
+                        <div class="row ">
+                            <div class="col text-center m-3 p-0">
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#buyOrderForm">
+                                    Create a Buy Order
+                                </button>
+                            </div>
+                            <div class="col text-center m-3 p-0">
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sellOrderForm">
+                                    Create a Sell Order
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row m-0 border border-dark">
+
                             <div class="col text-center m-3 bg-warning p-0">
                                 <h3 class="bg-primary mb-0 text-white"> BUY ORDERS</h3>
                                 <table class="card-body table table-striped mt-0">
@@ -117,9 +116,6 @@
                                         </tr>
                                     </tbody>
                                 </table>
-
-
-
                             </div>
                     </main>
                 </div>
@@ -137,6 +133,90 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
                 integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
         crossorigin="anonymous"></script>
+
+        <!-- Buy order Modal -->
+        <div class="modal fade" id="buyOrderForm" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Place a Buy order</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row m-4 border border-dark">
+                            <div class="col-7 text-center m-3">
+                                <form action="createOrder" method="POST">
+                                    <div class="form-group row">
+                                        <label for="size" class="col-3 col-form-label">
+                                            Amount</label>
+                                        <div class="col-9">
+                                            <input type="text" name="size" 
+                                                   id="size" class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="offerPrice" class="col-3 col-form-label">
+                                            Price</label>
+                                        <div class="col-9">
+                                            <input type="text" name="offerPrice" 
+                                                   id="offerPrice" class="form-control"/>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add Buy Order</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sell order Modal -->
+        <div class="modal fade" id="sellOrderForm" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Place a Sell order</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row m-4 border border-dark">
+                            <div class="col-7 text-center m-3">
+                                <form action="createOrder" method="POST">
+                                    <div class="form-group row">
+                                        <label for="size" class="col-3 col-form-label">
+                                            Amount</label>
+                                        <div class="col-9">
+                                            <input type="text" name="size" 
+                                                   id="size" class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="offerPrice" class="col-3 col-form-label">
+                                            Price</label>
+                                        <div class="col-9">
+                                            <input type="text" name="offerPrice" 
+                                                   id="offerPrice" class="form-control"/>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add Sell Order</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 
 </html>
