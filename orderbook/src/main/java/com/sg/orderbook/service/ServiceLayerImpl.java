@@ -168,8 +168,12 @@ public class ServiceLayerImpl implements ServiceLayer {
         order.setOfferPrice(BigDecimal.ZERO);
         order.setActive(false);
         order.setTime(LocalDateTime.now());
-        
+
         order = orders.save(order);
     }
 
+    @Override
+    public void addOrder(Order newOrder) {
+        orders.save(newOrder);
+    }
 }

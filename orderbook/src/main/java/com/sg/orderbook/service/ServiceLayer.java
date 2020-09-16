@@ -38,4 +38,6 @@ public interface ServiceLayer {
     public List getSymbols();
     
     public void createOrderbook(String symbol);
+    
+    public void addOrder(Order newOrder);
 }

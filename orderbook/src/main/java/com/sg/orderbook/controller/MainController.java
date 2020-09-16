@@ -8,12 +8,15 @@ package com.sg.orderbook.controller;
 import com.sg.orderbook.entities.Order;
 import com.sg.orderbook.entities.Transaction;
 import com.sg.orderbook.service.ServiceLayer;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 /**
  *
@@ -109,6 +112,26 @@ public class MainController {
         System.out.println(orderId);
         service.matchOrders(orderId);
         return "redirect:/orderbook";
+    }
+
+    @PostMapping("createorder")
+    public String addOrder(HttpServletRequest request) {
+        int size = Integer.parseInt(request.getParameter("size"));
+        String symbol = request.getParameter("symbol");
+        boolean side = Boolean.parseBoolean(request.getParameter("side"));
+        BigDecimal offerPrice = new BigDecimal(request.getParameter("offerPrice"));
+
+        Order createdOrder = new Order();
+        createdOrder.setSize(size);
+        createdOrder.setOfferPrice(offerPrice);
+        createdOrder.setActive(true);
+        createdOrder.setTime(LocalDateTime.now());
+        createdOrder.setSide(side);
+        createdOrder.setSymbol(symbol);
+
+        service.addOrder(createdOrder);
+
+        return "redirect:/orderbook?symbol=" + symbol;
     }
 
 }
