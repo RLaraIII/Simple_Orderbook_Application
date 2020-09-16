@@ -26,20 +26,29 @@
                             <span class="sr-only">(current)</span>
                         </a>
                     </li>
-                    <!--Dropdown-->
+
+                    <!--Dropdown for Orderbook-->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            View a Tradebook
+                            View an Orderbook
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown" th:each="sym : ${symbols}" th:object="${sym}" >
                             <a class="dropdown-item" th:href="@{orderbook(symbol=${sym})}" th:text="${sym}">Action</a>
                         </div>
                     </li>
                     <!--End dropdown-->
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="/tradehistory?symbol=GOOG">View History</a>
+                    
+                    <!--Dropdown for Trade History-->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            View Trade History
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown" th:each="sym : ${symbols}" th:object="${sym}" >
+                            <a class="dropdown-item" th:href="@{tradehistory(symbol=${sym})}" th:text="${sym}">Action</a>
+                        </div>
                     </li>
+                    <!--End dropdown-->
+                    
                 </ul>
                 <form class="form-inline my-2 my-lg-0">
                     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">

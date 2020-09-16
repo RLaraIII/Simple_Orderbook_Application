@@ -24,20 +24,29 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                     </li>
-                    <!--Dropdown-->
+                    
+                    <!--Dropdown for Orderbook-->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            View a Tradebook
+                            View an Orderbook
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown" th:each="sym : ${symbols}" th:object="${sym}" >
                             <a class="dropdown-item" th:href="@{orderbook(symbol=${sym})}" th:text="${sym}">Action</a>
                         </div>
                     </li>
                     <!--End dropdown-->
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="/tradehistory?symbol=GOOG">View History</a>
+                    
+                    <!--Dropdown for Trade History-->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            View Trade History
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown" th:each="sym : ${symbols}" th:object="${sym}" >
+                            <a class="dropdown-item" th:href="@{tradehistory(symbol=${sym})}" th:text="${sym}">Action</a>
+                        </div>
                     </li>
+                    <!--End dropdown-->
+
                 </ul>
                 <form class="form-inline my-2 my-lg-0">
                     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -55,16 +64,7 @@
                             <h3 class="text-center">Symbol Activity</h3>
                         </header>
                         <div class="card-body">
-<!--                             First Row of Symbols 
-                            <div th:each="sym : ${symbols}" th:object="${sym}" class="row mb-4">
-                                <div class="col h4" th:text="${sym}">
-                                    foo
-                                </div>
-                                <a href="#" th:href="@{orderbook(symbol=${sym})}" class="col btn btn-success mr-1">View Orderbook</a>
-                                <a href="#" th:href="@{tradehistory(symbol=${sym})}" class="col btn btn-success">View History</a>
-                            </div>-->
-
-                            <!--Form version-->
+                            
                             <form>
                                 <div class="form-group">
                                     <label for="orderbookList">View Orderbook or Trade History for a Symbol</label>
