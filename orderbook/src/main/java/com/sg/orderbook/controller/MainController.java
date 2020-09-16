@@ -31,27 +31,26 @@ public class MainController {
     // deleteOrder() <-- deletes order from order table
     @Autowired
     ServiceLayer service;
-    
+
     @GetMapping("/")
     public String viewIndex(HttpServletRequest request, Model model) {
         model.addAttribute("symbols", service.getSymbols());
-        
-        
+
         return "index";
     }
 
     @GetMapping("/orderbook")
     public String viewOrderbook(HttpServletRequest request, Model model) {
-        String symbol = request.getParameter("symbol");
+        String symbol = request.getParameter("symbol").toUpperCase();
 
         if (symbol == null) {
             return "redirect:/";
         }
-        
+
         if (service.getSymbols().contains(symbol)) {
             service.findPotentialTransactions(symbol);
         } else {
-            return "redirect:/";
+            return "redirect:/symbolnotfound?symbol=" + symbol;
         }
 
         List<Order> buyOrders = service.getAllBuyOrdersForSymbol(symbol);
@@ -63,22 +62,32 @@ public class MainController {
         model.addAttribute("sellOrders", sellOrders);
         return "orderbook";
     }
-    
+
+    @GetMapping("/symbolnotfound")
+    public String symbolNotFound(HttpServletRequest request, Model model) {
+        String symbol = request.getParameter("symbol").toUpperCase();
+        model.addAttribute("symbol", symbol);
+
+        return "symbolnotfound";
+    }
+
     @GetMapping("/neworderbook")
     public String newOrderBook(HttpServletRequest request, Model model) {
-        String symbol = request.getParameter("symbol");
-        
+        String symbol = request.getParameter("symbol").toUpperCase();
+
         service.createOrderbook(symbol);
-        
+
         return "redirect:/orderbook?symbol=" + symbol;
     }
 
     @GetMapping("/tradehistory")
     public String transactionsBySymbol(HttpServletRequest request, Model model) {
-        String symbol = request.getParameter("symbol");
+        String symbol = request.getParameter("symbol").toUpperCase();
 
-        if (symbol == null || !service.getSymbols().contains(symbol)) {
+        if (symbol == null) {
             return "redirect:/";
+        } else if (!service.getSymbols().contains(symbol)) {
+            return "redirect:/symbolnotfound?symbol=" + symbol;
         }
 
         List<Transaction> transactions = service.getAllTransactionsForSymbol(symbol);
