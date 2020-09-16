@@ -36,4 +36,6 @@ public interface ServiceLayer {
     public void findPotentialTransactions(String symbol);
     
     public List getSymbols();
+    
+    public void createOrderbook(String symbol);
 }

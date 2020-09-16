@@ -24,25 +24,25 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                     </li>
-                    
+
                     <!--Dropdown for Orderbook-->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             View an Orderbook
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown" th:each="sym : ${symbols}" th:object="${sym}" >
-                            <a class="dropdown-item" th:href="@{orderbook(symbol=${sym})}" th:text="${sym}">Action</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown" >
+                            <a class="dropdown-item" th:each="sym : ${symbols}" th:object="${sym}" th:href="@{orderbook(symbol=${sym})}" th:text="${sym}">Action</a>
                         </div>
                     </li>
                     <!--End dropdown-->
-                    
+
                     <!--Dropdown for Trade History-->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             View Trade History
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown" th:each="sym : ${symbols}" th:object="${sym}" >
-                            <a class="dropdown-item" th:href="@{tradehistory(symbol=${sym})}" th:text="${sym}">Action</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown" >
+                            <a class="dropdown-item" th:each="sym : ${symbols}" th:object="${sym}" th:href="@{tradehistory(symbol=${sym})}" th:text="${sym}">Action</a>
                         </div>
                     </li>
                     <!--End dropdown-->
@@ -64,20 +64,28 @@
                             <h3 class="text-center">Symbol Activity</h3>
                         </header>
                         <div class="card-body">
-                            
-                            <form>
-                                <div class="form-group">
-                                    <label for="orderbookList">View Orderbook or Trade History for a Symbol</label>
-                                    <select class="form-control" id="orderbookList" name="symbol">
-                                        <option th:each="sym : ${symbols}"
-                                                th:object="${sym}"
-                                                th:value="${sym}"
-                                                th:text="${sym}"></option>
-                                    </select>
-                                </div>
-                                <button class="btn btn-primary btn-sm" formaction="orderbook" type="submit">View Orderbook</button>
-                                <button class="btn btn-info btn-sm" formaction="tradehistory" type="submit">View Trade History</button>
-                            </form>
+                            <div class="row">
+                                <form class="col">
+                                    <div class="form-group">
+                                        <label for="orderbookList">View Orderbook or Trade History</label>
+                                        <select class="form-control" id="orderbookList" name="symbol">
+                                            <option th:each="sym : ${symbols}"
+                                                    th:object="${sym}"
+                                                    th:value="${sym}"
+                                                    th:text="${sym}"></option>
+                                        </select>
+                                    </div>
+                                    <button class="btn btn-primary btn-sm" formaction="orderbook" type="submit">View Orderbook</button>
+                                    <button class="btn btn-info btn-sm" formaction="tradehistory" type="submit">View Trade History</button>
+                                </form>
+                                <form class="col" action="neworderbook">
+                                    <div class="form-group">
+                                        <label for="newSymbol">Create an Orderbook for New Symbol</label>
+                                        <input type="text" class="form-control" id="newSymbol" name="symbol">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                                </form>
+                            </div>
                         </div>
                     </main>
                 </div>

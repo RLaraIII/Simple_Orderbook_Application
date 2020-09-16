@@ -47,6 +47,12 @@ public class MainController {
         if (symbol == null) {
             return "redirect:/";
         }
+        
+        if (service.getSymbols().contains(symbol)) {
+            service.findPotentialTransactions(symbol);
+        } else {
+            return "redirect:/";
+        }
 
         List<Order> buyOrders = service.getAllBuyOrdersForSymbol(symbol);
         List<Order> sellOrders = service.getAllSellOrdersForSymbol(symbol);
@@ -57,18 +63,21 @@ public class MainController {
         model.addAttribute("sellOrders", sellOrders);
         return "orderbook";
     }
+    
+    @GetMapping("/neworderbook")
+    public String newOrderBook(HttpServletRequest request, Model model) {
+        String symbol = request.getParameter("symbol");
+        
+        service.createOrderbook(symbol);
+        
+        return "redirect:/orderbook?symbol=" + symbol;
+    }
 
-//    @GetMapping("/tradehistory")
-//    public String allTransactions(Model model) {
-//        List<Transaction> transactions = service.getAllTransactionsForSymbol("GOOG");
-//        model.addAttribute("transactions", transactions);
-//        return "history";
-//    }
     @GetMapping("/tradehistory")
     public String transactionsBySymbol(HttpServletRequest request, Model model) {
         String symbol = request.getParameter("symbol");
 
-        if (symbol == null) {
+        if (symbol == null || !service.getSymbols().contains(symbol)) {
             return "redirect:/";
         }
 

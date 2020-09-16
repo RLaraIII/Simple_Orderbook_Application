@@ -8,9 +8,8 @@ package com.sg.orderbook.service;
 import com.sg.orderbook.entities.Order;
 import com.sg.orderbook.entities.Transaction;
 import com.sg.orderbook.repositories.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -80,7 +79,7 @@ public class ServiceLayerImpl implements ServiceLayer {
         sellOrder = orders.save(sellOrder);
         newTransaction.setBuyOrder(buyOrder);
         newTransaction.setSellOrder(sellOrder);
-        
+
         newTransaction = transactions.save(newTransaction);
 
         return newTransaction;
@@ -127,14 +126,14 @@ public class ServiceLayerImpl implements ServiceLayer {
         List transactionList = transactions.findAllTransactionsForOrder(order);
 
         if (order.getSize() > 0) {
-            
+
             if (transactionList.isEmpty()) {
                 orders.deleteById(order.getId());
             } else {
                 order.setSize(0);
                 order.setActive(false);
                 orders.save(order);
-            }   
+            }
         }
     }
 
@@ -145,7 +144,9 @@ public class ServiceLayerImpl implements ServiceLayer {
 
         boolean doneMatching = false;
         while (!doneMatching) {
-            if (sellOrders.get(0).getOfferPrice().compareTo(buyOrders.get(0).getOfferPrice()) <= 0) {
+            if (buyOrders.size() == 0 || sellOrders.size() == 0) {
+                doneMatching = true;
+            } else if (sellOrders.get(0).getOfferPrice().compareTo(buyOrders.get(0).getOfferPrice()) <= 0) {
                 makeTransaction(buyOrders.get(0), sellOrders.get(0));
                 buyOrders = orders.findAllBuyOrdersForSymbol(symbol);
                 sellOrders = orders.findAllSellOrdersForSymbol(symbol);
@@ -159,4 +160,16 @@ public class ServiceLayerImpl implements ServiceLayer {
     public List getSymbols() {
         return orders.getSymbols();
     }
+
+    @Override
+    public void createOrderbook(String symbol) {
+        Order order = new Order();
+        order.setSymbol(symbol);
+        order.setOfferPrice(BigDecimal.ZERO);
+        order.setActive(false);
+        order.setTime(LocalDateTime.now());
+        
+        order = orders.save(order);
+    }
+
 }

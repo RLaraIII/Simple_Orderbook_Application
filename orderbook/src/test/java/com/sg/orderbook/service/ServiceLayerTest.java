@@ -489,4 +489,12 @@ public class ServiceLayerTest {
         assertEquals(3, symbols.size());
     }
 
+    @Test
+    public void testCreateOrderbook() {
+        List<String> beforeSymbols = service.getSymbols();
+        service.createOrderbook("MSFT");
+        List<String> afterSymbols = service.getSymbols();
+        
+        assertNotEquals(beforeSymbols, afterSymbols);
+    }
 }

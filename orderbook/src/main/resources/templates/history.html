@@ -30,8 +30,8 @@
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             View an Orderbook
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown" th:each="sym : ${symbols}" th:object="${sym}" >
-                            <a class="dropdown-item" th:href="@{orderbook(symbol=${sym})}" th:text="${sym}">Action</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown" >
+                            <a class="dropdown-item" th:each="sym : ${symbols}" th:object="${sym}" th:href="@{orderbook(symbol=${sym})}" th:text="${sym}">Action</a>
                         </div>
                     </li>
                     <!--End dropdown-->
@@ -41,8 +41,8 @@
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             View Trade History
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown" th:each="sym : ${symbols}" th:object="${sym}" >
-                            <a class="dropdown-item" th:href="@{tradehistory(symbol=${sym})}" th:text="${sym}">Action</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown" >
+                            <a class="dropdown-item" th:each="sym : ${symbols}" th:object="${sym}" th:href="@{tradehistory(symbol=${sym})}" th:text="${sym}">Action</a>
                         </div>
                     </li>
                     <!--End dropdown-->
