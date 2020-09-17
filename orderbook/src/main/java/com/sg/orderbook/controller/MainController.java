@@ -48,11 +48,23 @@ public class MainController {
     @GetMapping("/orderbook")
     public String viewOrderbook(HttpServletRequest request, Model model) {
         String symbol = request.getParameter("symbol").toUpperCase();
-
+      
+        int messageCode = request.getParameter("message") == null ? 0 :  Integer.parseInt(request.getParameter("message"));
+        String message = "";
+        if (messageCode == 1) {
+            message += "New Order Created!";
+        } else if (messageCode == 2) {
+            message += "Order Successfully Matched!";
+        } else if (messageCode == 3) {
+            message += "Order Successfully Deleted!";
+        } else if (messageCode == 4) {
+            message += "Order Successfully Edited!";
+        }
+        
         if (symbol == null) {
             return "redirect:/";
         }
-
+        
         if (service.getSymbols().contains(symbol)) {
             service.findPotentialTransactions(symbol);
         } else {
@@ -66,6 +78,7 @@ public class MainController {
         model.addAttribute("symbols", service.getSymbols());
         model.addAttribute("buyOrders", buyOrders);
         model.addAttribute("sellOrders", sellOrders);
+        model.addAttribute("message", message);
         return "orderbook";
     }
 
@@ -74,7 +87,6 @@ public class MainController {
         String symbol = request.getParameter("symbol").toUpperCase();
         model.addAttribute("symbol", symbol);
         model.addAttribute("symbols", service.getSymbols());
-
         return "symbolnotfound";
     }
 
@@ -115,13 +127,13 @@ public class MainController {
     @GetMapping("/deleteorder")
     public String deleteOrder(Integer id, String symbol) {
         service.deleteUnmatchedOrder(id);
-        return "redirect:/orderbook?symbol=" + symbol;
+        return "redirect:/orderbook?symbol=" + symbol + "&message=3";
     }
 
     @GetMapping("matchorder")
     public String matchOrder(Integer orderId, String symbol) {
         service.matchOrders(orderId);
-        return "redirect:/orderbook?symbol=" + symbol;
+        return "redirect:/orderbook?symbol=" + symbol + "&message=2";
     }
 
     @PostMapping("createorder")
@@ -141,7 +153,7 @@ public class MainController {
 
         service.addOrder(createdOrder);
 
-        return "redirect:/orderbook?symbol=" + symbol;
+        return "redirect:/orderbook?symbol=" + symbol + "&message=1";
     }
 
 }
