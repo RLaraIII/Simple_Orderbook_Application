@@ -84,6 +84,7 @@
                                     <thead class="thead-dark">
                                         <tr>
                                             <th>Delete</th>
+                                            <th>Edit</th>
                                             <th>Time</th>
                                             <th>Shares</th>
                                             <th>Bid</th>
@@ -92,14 +93,13 @@
                                     </thead>
                                     <tbody>
                                         <tr th:each="order, iStat : ${buyOrders}" th:object="${order}">
-
-                                            <td><a class="btn btn-danger btn-sm" 
-                                                   th:href="@{deleteorder(id=${order.id}, symbol=${symbol})}">Delete</a></td>
+                                            <td><a class="btn btn-danger btn-sm" th:href="@{/deleteOrder(id=${order.id})}">Delete</a></td>
+                                            <td><a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#editOrderForm" th:href="@{/editorder(id=${order.id})}">Edit</a></td>
                                             <td th:text="${#temporals.format(order.time, 'dd-MM-yyyy HH:mm:ss')}">Order Time</td>
                                             <td th:text="${order.size}">Order size</td>
                                             <td th:text="${order.offerPrice}">Order bid</td>
                                             <td><a 
-                                                    th:href="@{matchorder(orderId=${order.id}, symbol=${symbol})}" 
+                                                    th:href="@{matchorder(orderId=${order.id})}" 
                                                     class="btn btn-success" 
                                                     th:style="${!iStat.first}? 'display: none;'">Match</a></td>
                                         </tr>
@@ -115,19 +115,21 @@
                                             <th>Ask</th>
                                             <th>Shares</th>
                                             <th>Time </th>
+                                            <th>Edit</th>
                                             <th>Delete</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr th:each="order, iStat : ${sellOrders}" th:object="${order}">
                                             <td><a 
-                                                    th:href="@{matchorder(orderId=${order.id}, symbol=${symbol})}"  
+                                                    th:href="@{matchorder(orderId=${order.id})}"  
                                                     class="btn btn-success" 
                                                     th:style="${!iStat.first}? 'display: none;'">Match</a></td>
                                             <td th:text="${order.offerPrice}">Order Ask</td>
                                             <td th:text="${order.size}">Order size</td>
                                             <td th:text="${#temporals.format(order.time, 'dd-MM-yyyy HH:mm:ss')}">Order Time</td>
-                                            <td><a class="btn btn-danger btn-sm" th:href="@{/deleteorder(id=${order.id}, symbol=${symbol})}">Delete</a></td>
+                                            <td><a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#editOrderForm" th:href="@{/editorder(id=${order.id})}">Edit</a></td>
+                                            <td><a class="btn btn-danger btn-sm" th:href="@{/deleteOrder(id=${order.id})}">Delete</a></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -152,19 +154,19 @@
                             <div class="col-7 text-center m-3">
                                 <form action="createorder" method="POST">
                                     <div class="form-group row">
-                                        <label for="size" class="col-3 col-form-label">
-                                            Amount</label>
-                                        <div class="col-9">
-                                            <input type="text" name="size" 
-                                                   id="size" class="form-control"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
                                         <label for="offerPrice" class="col-3 col-form-label">
                                             Price</label>
                                         <div class="col-9">
                                             <input type="text" name="offerPrice" 
                                                    id="offerPrice" class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="size" class="col-3 col-form-label">
+                                            Amount</label>
+                                        <div class="col-9">
+                                            <input type="text" name="size" 
+                                                   id="size" class="form-control"/>
                                         </div>
                                     </div>
                                     <input type="hidden" name="symbol" th:value="${symbol}"/>
@@ -175,7 +177,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary text-center" data-dismiss="modal">Close</button>
 
                     </div>
                 </div>
@@ -197,19 +199,19 @@
                             <div class="col-7 text-center m-3">
                                 <form action="createorder" method="POST">
                                     <div class="form-group row">
-                                        <label for="size" class="col-3 col-form-label">
-                                            Amount</label>
-                                        <div class="col-9">
-                                            <input type="text" name="size" 
-                                                   id="size" class="form-control"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
                                         <label for="offerPrice" class="col-3 col-form-label">
                                             Price</label>
                                         <div class="col-9">
                                             <input type="text" name="offerPrice" 
                                                    id="offerPrice" class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="size" class="col-3 col-form-label">
+                                            Amount</label>
+                                        <div class="col-9">
+                                            <input type="text" name="size" 
+                                                   id="size" class="form-control"/>
                                         </div>
                                     </div>
                                     <input type="hidden" name="symbol" th:value="${symbol}"/>
@@ -221,7 +223,49 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary text-center" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit order Modal -->
+        <div class="modal fade" id="editOrderForm" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Edit Order</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row m-4 border border-dark">
+                            <div class="col-7 text-center m-3">
+                                <form action="editorder" method="POST">
+                                    <div class="form-group row">
+                                        <label for="offerPrice" class="col-3 col-form-label">
+                                            Price</label>
+                                        <div class="col-9">
+                                            <input type="text" name="offerPrice" 
+                                                   id="offerPrice" class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="size" class="col-3 col-form-label">
+                                            Amount</label>
+                                        <div class="col-9">
+                                            <input type="text" name="size" 
+                                                   id="size" class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Edit Order</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary text-center" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
