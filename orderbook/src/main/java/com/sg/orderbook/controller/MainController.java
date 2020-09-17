@@ -155,5 +155,27 @@ public class MainController {
 
         return "redirect:/orderbook?symbol=" + symbol + "&message=1";
     }
+    
+    @GetMapping("editorder")
+    public String editOrder(HttpServletRequest request, Model model) {
+        Order order = service.getOrderById(Integer.parseInt(request.getParameter("orderId")));
+        
+        model.addAttribute("order", order);
+        model.addAttribute("symbols", service.getSymbols());
+        
+        return "editorder?orderId=" + order.getId();
+    }
 
+    @PostMapping("editorder")
+    public String performEditOrder(HttpServletRequest request, Model model) {
+        Order order = service.getOrderById(Integer.parseInt(request.getParameter("orderId")));
+        
+        order.setSize(Integer.parseInt(request.getParameter("size")));
+        order.setOfferPrice(new BigDecimal(request.getParameter("amount")));
+        order.setTime(LocalDateTime.now());
+        
+        service.addOrder(order);
+        
+        return "redirect:/orderbook?symbol=" + order.getSymbol() + "&message=4";
+    }
 }
