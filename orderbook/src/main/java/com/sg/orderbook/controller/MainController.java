@@ -48,8 +48,8 @@ public class MainController {
     @GetMapping("/orderbook")
     public String viewOrderbook(HttpServletRequest request, Model model) {
         String symbol = request.getParameter("symbol").toUpperCase();
-      
-        int messageCode = request.getParameter("message") == null ? 0 :  Integer.parseInt(request.getParameter("message"));
+
+        int messageCode = request.getParameter("message") == null ? 0 : Integer.parseInt(request.getParameter("message"));
         String message = "";
         if (messageCode == 1) {
             message += "New Order Created!";
@@ -60,11 +60,11 @@ public class MainController {
         } else if (messageCode == 4) {
             message += "Order Successfully Edited!";
         }
-        
+
         if (symbol == null) {
             return "redirect:/";
         }
-        
+
         if (service.getSymbols().contains(symbol)) {
             service.findPotentialTransactions(symbol);
         } else {
@@ -111,13 +111,13 @@ public class MainController {
         }
 
         List<Transaction> transactions = new ArrayList<>();
-        
-        if (dateString == null || dateString.isBlank()) {
+
+        if (dateString == null) {
             transactions = service.getAllTransactionsForSymbol(symbol);
         } else {
             transactions = service.getAllTransactionsForSymbolAndDate(symbol, LocalDate.parse(dateString));
         }
-        
+
         model.addAttribute("symbol", symbol);
         model.addAttribute("symbols", service.getSymbols());
         model.addAttribute("transactions", transactions);
@@ -154,6 +154,15 @@ public class MainController {
         service.addOrder(createdOrder);
 
         return "redirect:/orderbook?symbol=" + symbol + "&message=1";
+    }
+
+    @GetMapping("editorder")
+    public String editOrder(HttpServletRequest request, Model model) {
+        int id = Integer.parseInt(request.getParameter("id"));
+        Order order = service.getOrderById(id);
+
+        model.addAttribute("order", order);
+        return "editOrder";
     }
 
 }
