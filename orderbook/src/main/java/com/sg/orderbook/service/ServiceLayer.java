@@ -7,6 +7,7 @@ package com.sg.orderbook.service;
 
 import org.springframework.stereotype.Component;
 import com.sg.orderbook.entities.*;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -28,6 +29,8 @@ public interface ServiceLayer {
     public List<Transaction> getAllTransactionsForSymbol(String symbol);
     
     public List<Transaction> getTop5ByFinalDate();
+    
+    public List<Transaction> getAllTransactionsForDate(LocalDate date);
     
     public void deleteUnmatchedOrder(int orderId);
     

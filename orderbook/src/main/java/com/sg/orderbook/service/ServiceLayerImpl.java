@@ -9,6 +9,7 @@ import com.sg.orderbook.entities.Order;
 import com.sg.orderbook.entities.Transaction;
 import com.sg.orderbook.repositories.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -183,5 +184,9 @@ public class ServiceLayerImpl implements ServiceLayer {
     @Override
     public List<Transaction> getTop5ByFinalDate() {
         return transactions.findTop5ByOrderByFinalTimeDesc();
+    }
+
+    public List<Transaction> getAllTransactionsForDate(LocalDate date) {
+        return transactions.findAllTransactionsForDate(date);
     }
 }
