@@ -45,4 +45,8 @@ public interface ServiceLayer {
     public void createOrderbook(String symbol);
     
     public void addOrder(Order newOrder);
+    
+    public void incrementBuyOrders(String tick, String symbol);
+    
+    public void decrementSellOrders(String tick, String symbol);
 }

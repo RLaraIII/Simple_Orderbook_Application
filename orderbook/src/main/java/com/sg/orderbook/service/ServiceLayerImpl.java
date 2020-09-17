@@ -75,7 +75,7 @@ public class ServiceLayerImpl implements ServiceLayer {
 
         int buyOrderSize = buyOrder.getSize();
         int sellOrderSize = sellOrder.getSize();
-        
+
         buyOrder.setSize(buySizeBigger ? buyOrderSize - sellOrderSize : 0);
         sellOrder.setSize(buySizeBigger ? 0 : sellOrderSize - buyOrderSize);
 
@@ -189,5 +189,25 @@ public class ServiceLayerImpl implements ServiceLayer {
     @Override
     public List<Transaction> getAllTransactionsForSymbolAndDate(String symbol, LocalDate date) {
         return transactions.findAllTransactionsForSymbolAndDate(symbol, date);
+    }
+
+    @Override
+    public void incrementBuyOrders(String tick, String symbol) {
+        List<Order> buyOrderList = orders.findAllBuyOrdersForSymbol(symbol);
+        buyOrderList.stream().forEach(
+                (o) -> {
+                    o.setOfferPrice(o.getOfferPrice().add(new BigDecimal(tick)));
+                    orders.save(o);
+                });
+    }
+
+    @Override
+    public void decrementSellOrders(String tick, String symbol) {
+        List<Order> sellOrderList = orders.findAllSellOrdersForSymbol(symbol);
+        sellOrderList.stream().forEach(
+                (o) -> {
+                    o.setOfferPrice(o.getOfferPrice().subtract(new BigDecimal(tick)));
+                    orders.save(o);
+                });
     }
 }
