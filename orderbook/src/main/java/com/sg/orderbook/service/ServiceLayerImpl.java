@@ -48,7 +48,7 @@ public class ServiceLayerImpl implements ServiceLayer {
     @Override
     public List<Transaction> getAllTransactionsForSymbol(String symbol) {
         // pull all transactions from database
-        List<Transaction> transactionList = transactions.findByFinalSymbol(symbol);
+        List<Transaction> transactionList = transactions.findByFinalSymbolOrderByFinalTimeDesc(symbol);
 
         return transactionList;
     }

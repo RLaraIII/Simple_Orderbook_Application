@@ -71,6 +71,7 @@ public class MainController {
     public String symbolNotFound(HttpServletRequest request, Model model) {
         String symbol = request.getParameter("symbol").toUpperCase();
         model.addAttribute("symbol", symbol);
+        model.addAttribute("symbols", service.getSymbols());
 
         return "symbolnotfound";
     }

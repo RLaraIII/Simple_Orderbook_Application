@@ -440,7 +440,7 @@ public class ServiceLayerTest {
         thirdSellOrder = orders.save(thirdBuyOrder);
         
         service.findPotentialTransactions(firstBuyOrder.getSymbol());
-        List<Transaction> transactionsForGoog = transactions.findByFinalSymbol(firstBuyOrder.getSymbol());
+        List<Transaction> transactionsForGoog = transactions.findByFinalSymbolOrderByFinalTimeDesc(firstBuyOrder.getSymbol());
         
         assertEquals(1, transactionsForGoog.size());
         assertEquals(firstBuyOrder, transactionsForGoog.get(0).getBuyOrder());
