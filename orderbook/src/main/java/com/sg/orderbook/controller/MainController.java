@@ -163,7 +163,7 @@ public class MainController {
         model.addAttribute("order", order);
         model.addAttribute("symbols", service.getSymbols());
         
-        return "editorder?orderId=" + order.getId();
+        return "editorder";
     }
 
     @PostMapping("editorder")
