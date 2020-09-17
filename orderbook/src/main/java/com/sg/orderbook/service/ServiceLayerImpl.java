@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -188,5 +189,10 @@ public class ServiceLayerImpl implements ServiceLayer {
 
     public List<Transaction> getAllTransactionsForDate(LocalDate date) {
         return transactions.findAllTransactionsForDate(date);
+    }
+
+    @Override
+    public Order getOrderById(int orderId) {        
+        return orders.findById(orderId).orElse(null);
     }
 }

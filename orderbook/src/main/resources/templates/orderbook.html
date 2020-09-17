@@ -94,7 +94,7 @@
                                     <tbody>
                                         <tr th:each="order, iStat : ${buyOrders}" th:object="${order}">
                                             <td><a class="btn btn-danger btn-sm" th:href="@{/deleteorder(id=${order.id}, symbol=${symbol})}">Delete</a></td>
-                                            <td><a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#editOrderForm" th:href="@{/editorder(id=${order.id})}">Edit</a></td>
+                                            <td><a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#editOrderForm" th:href="@{/editorder}">Edit</a></td>
                                             <td th:text="${#temporals.format(order.time, 'dd-MM-yyyy HH:mm:ss')}">Order Time</td>
                                             <td th:text="${order.size}">Order size</td>
                                             <td th:text="${order.offerPrice}">Order bid</td>
@@ -128,7 +128,7 @@
                                             <td th:text="${order.offerPrice}">Order Ask</td>
                                             <td th:text="${order.size}">Order size</td>
                                             <td th:text="${#temporals.format(order.time, 'dd-MM-yyyy HH:mm:ss')}">Order Time</td>
-                                            <td><a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#editOrderForm" th:href="@{/editorder(id=${order.id})}">Edit</a></td>
+                                            <td><a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#editOrderForm" th:href="@{/editorder(id=${order.id}, symbol=${symbol})}">Edit</a></td>
                                             <td><a class="btn btn-danger btn-sm" th:href="@{/deleteorder(id=${order.id}, symbol=${symbol})}">Delete</a></td>
                                         </tr>
                                     </tbody>
@@ -259,6 +259,8 @@
                                                    id="size" class="form-control"/>
                                         </div>
                                     </div>
+                                    <input type="hidden" name="id" th:value="${id}"/>
+                                    <input type="hidden" name="symbol" th:value="${symbol}"/>
                                     <button type="submit" class="btn btn-primary">Edit Order</button>
                                 </form>
                             </div>

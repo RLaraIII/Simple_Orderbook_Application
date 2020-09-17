@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.sg.orderbook.entities.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -45,4 +46,6 @@ public interface ServiceLayer {
     public void createOrderbook(String symbol);
     
     public void addOrder(Order newOrder);
+    
+    public Order getOrderById(int orderId);
 }
