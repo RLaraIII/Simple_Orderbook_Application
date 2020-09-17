@@ -31,6 +31,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
     
     List findTop5ByOrderByFinalTimeDesc();
 
-    @Query(value = "SELECT * FROM Transaction t WHERE CAST(t.finalTime AS DATE) = :date", nativeQuery = true)
-    List<Transaction> findAllTransactionsForDate(@Param("date") LocalDate date);
+    @Query(value = "SELECT * FROM Transaction t WHERE t.finalSymbol = :symbol AND CAST(t.finalTime AS DATE) = :date", nativeQuery = true)
+    List<Transaction> findAllTransactionsForSymbolAndDate(@Param("symbol") String symbol, @Param("date") LocalDate date);
 }

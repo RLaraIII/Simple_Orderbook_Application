@@ -30,7 +30,7 @@ public interface ServiceLayer {
     
     public List<Transaction> getTop5ByFinalDate();
     
-    public List<Transaction> getAllTransactionsForDate(LocalDate date);
+    public List<Transaction> getAllTransactionsForSymbolAndDate(String symbol, LocalDate date);
     
     public void deleteUnmatchedOrder(int orderId);
     

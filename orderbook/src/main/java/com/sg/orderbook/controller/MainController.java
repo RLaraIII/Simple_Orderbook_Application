@@ -9,7 +9,9 @@ import com.sg.orderbook.entities.Order;
 import com.sg.orderbook.entities.Transaction;
 import com.sg.orderbook.service.ServiceLayer;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,6 +90,7 @@ public class MainController {
     @GetMapping("/tradehistory")
     public String transactionsBySymbol(HttpServletRequest request, Model model) {
         String symbol = request.getParameter("symbol").toUpperCase();
+        String dateString = request.getParameter("dateString");
 
         if (symbol == null) {
             return "redirect:/";
@@ -95,8 +98,14 @@ public class MainController {
             return "redirect:/symbolnotfound?symbol=" + symbol;
         }
 
-        List<Transaction> transactions = service.getAllTransactionsForSymbol(symbol);
-
+        List<Transaction> transactions = new ArrayList<>();
+        
+        if (dateString == null || dateString.isBlank()) {
+            transactions = service.getAllTransactionsForSymbol(symbol);
+        } else {
+            transactions = service.getAllTransactionsForSymbolAndDate(symbol, LocalDate.parse(dateString));
+        }
+        
         model.addAttribute("symbol", symbol);
         model.addAttribute("symbols", service.getSymbols());
         model.addAttribute("transactions", transactions);

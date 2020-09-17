@@ -569,7 +569,7 @@ public class ServiceLayerTest {
         thirdTransaction.setFinalTime(LocalDateTime.parse("2020-01-02T12:00:00"));
         thirdTransaction = transactions.save(thirdTransaction);
         
-        List<Transaction> transactionList = service.getAllTransactionsForDate(firstTransaction.getFinalTime().toLocalDate());
+        List<Transaction> transactionList = service.getAllTransactionsForSymbolAndDate(firstTransaction.getFinalSymbol(), firstTransaction.getFinalTime().toLocalDate());
 
         assertEquals(2, transactionList.size());
         assertTrue(transactionList.contains(firstTransaction));

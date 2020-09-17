@@ -69,13 +69,24 @@
                                 <caption>Trade History on <span th:text="${symbol}"></span></caption>
                                 <thead>
                                     <tr>
-<!--                                        <th scope="col" class="font-weight-bold">Symbol</th>-->
+                                        <!--                                        <th scope="col" class="font-weight-bold">Symbol</th>-->
                                         <th scope="col" class="font-weight-bold">Timestamp</th>
                                         <th scope="col" class="font-weight-bold">Price</th>
                                         <th scope="col" class="font-weight-bold">Size</th>
                                     </tr>
                                 </thead>
-
+                                <form action="tradehistory" method="GET">
+                                    <div class="form-group row">
+                                        <label for="dateString" class="col-3 col-form-label">
+                                            Date</label>
+                                        <div class="col-9">
+                                            <input type="date" name="dateString" 
+                                                   id="dateString" class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="symbol" th:value="${symbol}"/>
+                                    <button type="submit" class="btn btn-primary">Get transactions for date</button>
+                                </form>
                                 <!-- Entries -->
                                 <tbody>
                                     <tr th:each="transaction : ${transactions}" th:object="${transaction}">

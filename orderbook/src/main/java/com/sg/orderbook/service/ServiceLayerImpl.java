@@ -186,7 +186,8 @@ public class ServiceLayerImpl implements ServiceLayer {
         return transactions.findTop5ByOrderByFinalTimeDesc();
     }
 
-    public List<Transaction> getAllTransactionsForDate(LocalDate date) {
-        return transactions.findAllTransactionsForDate(date);
+    @Override
+    public List<Transaction> getAllTransactionsForSymbolAndDate(String symbol, LocalDate date) {
+        return transactions.findAllTransactionsForSymbolAndDate(symbol, date);
     }
 }
