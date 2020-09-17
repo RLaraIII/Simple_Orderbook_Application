@@ -7,6 +7,7 @@ package com.sg.orderbook.repositories;
 
 import com.sg.orderbook.entities.Order;
 import com.sg.orderbook.entities.Transaction;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,5 +28,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
     
     @Query("SELECT t FROM Transaction t WHERE t.buyOrder = :order OR t.sellOrder = :order")
     List findAllTransactionsForOrder(@Param("order") Order order);
-    
+
+    @Query(value = "SELECT * FROM Transaction t WHERE CAST(t.finalTime AS DATE) = :date", nativeQuery = true)
+    List<Transaction> findAllTransactionsForDate(@Param("date") LocalDate date);
 }

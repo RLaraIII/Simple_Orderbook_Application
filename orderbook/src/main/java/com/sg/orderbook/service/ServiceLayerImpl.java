@@ -9,6 +9,7 @@ import com.sg.orderbook.entities.Order;
 import com.sg.orderbook.entities.Transaction;
 import com.sg.orderbook.repositories.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -178,5 +179,10 @@ public class ServiceLayerImpl implements ServiceLayer {
     @Override
     public void addOrder(Order newOrder) {
         orders.save(newOrder);
+    }
+
+    @Override
+    public List<Transaction> getAllTransactionsForDate(LocalDate date) {
+        return transactions.findAllTransactionsForDate(date);
     }
 }

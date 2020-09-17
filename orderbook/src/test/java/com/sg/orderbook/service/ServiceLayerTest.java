@@ -21,8 +21,10 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.annotation.Rollback;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  *
@@ -496,5 +498,82 @@ public class ServiceLayerTest {
         List<String> afterSymbols = service.getSymbols();
         
         assertNotEquals(beforeSymbols, afterSymbols);
+    }
+    
+    @Test
+    public void testGetAllTransactionsForDate() {
+        Order buyOrder = new Order();
+
+        buyOrder.setActive(true);
+        buyOrder.setOfferPrice(new BigDecimal("100").setScale(2, RoundingMode.HALF_UP));
+        buyOrder.setSide(true);
+        buyOrder.setSize(30);
+        buyOrder.setSymbol("GOOG");
+        buyOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
+        buyOrder = orders.save(buyOrder);
+                
+        Order firstSellOrder = new Order();
+
+        firstSellOrder.setActive(true);
+        firstSellOrder.setOfferPrice(new BigDecimal("100").setScale(2, RoundingMode.HALF_UP));
+        firstSellOrder.setSide(false);
+        firstSellOrder.setSize(10);
+        firstSellOrder.setSymbol("GOOG");
+        firstSellOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
+        firstSellOrder = orders.save(firstSellOrder);
+        
+        Order secondSellOrder = new Order();
+
+        secondSellOrder.setActive(true);
+        secondSellOrder.setOfferPrice(new BigDecimal("100").setScale(2, RoundingMode.HALF_UP));
+        secondSellOrder.setSide(false);
+        secondSellOrder.setSize(10);
+        secondSellOrder.setSymbol("GOOG");
+        secondSellOrder.setTime(LocalDateTime.parse("2020-01-01T13:00:00"));
+        secondSellOrder = orders.save(secondSellOrder);
+        
+        Order thirdSellOrder = new Order();
+
+        thirdSellOrder.setActive(true);
+        thirdSellOrder.setOfferPrice(new BigDecimal("100").setScale(2, RoundingMode.HALF_UP));
+        thirdSellOrder.setSide(false);
+        thirdSellOrder.setSize(10);
+        thirdSellOrder.setSymbol("GOOG");
+        thirdSellOrder.setTime(LocalDateTime.parse("2020-01-02T12:00:00"));
+        thirdSellOrder = orders.save(thirdSellOrder);
+        
+        Transaction firstTransaction = new Transaction();
+        firstTransaction.setAmount(10);
+        firstTransaction.setBuyOrder(buyOrder);
+        firstTransaction.setSellOrder(firstSellOrder);
+        firstTransaction.setFinalPrice(new BigDecimal("100").setScale(2, RoundingMode.HALF_UP));
+        firstTransaction.setFinalSymbol("GOOG");
+        firstTransaction.setFinalTime(LocalDateTime.parse("2020-01-01T12:00:00"));
+        firstTransaction = transactions.save(firstTransaction);
+                
+        Transaction secondTransaction = new Transaction();
+        secondTransaction.setAmount(10);
+        secondTransaction.setBuyOrder(buyOrder);
+        secondTransaction.setSellOrder(secondSellOrder);
+        secondTransaction.setFinalPrice(new BigDecimal("100").setScale(2, RoundingMode.HALF_UP));
+        secondTransaction.setFinalSymbol("GOOG");
+        secondTransaction.setFinalTime(LocalDateTime.parse("2020-01-01T12:00:00"));
+        secondTransaction = transactions.save(secondTransaction);
+        
+        Transaction thirdTransaction = new Transaction();
+        thirdTransaction.setAmount(10);
+        thirdTransaction.setBuyOrder(buyOrder);
+        thirdTransaction.setSellOrder(thirdSellOrder);
+        thirdTransaction.setFinalPrice(new BigDecimal("100").setScale(2, RoundingMode.HALF_UP));
+        thirdTransaction.setFinalSymbol("GOOG");
+        thirdTransaction.setFinalTime(LocalDateTime.parse("2020-01-02T12:00:00"));
+        thirdTransaction = transactions.save(thirdTransaction);
+        
+        List<Transaction> transactionList = service.getAllTransactionsForDate(firstTransaction.getFinalTime().toLocalDate());
+
+        assertEquals(2, transactionList.size());
+        assertTrue(transactionList.contains(firstTransaction));
+        assertTrue(transactionList.contains(secondTransaction));
+        assertFalse(transactionList.contains(thirdTransaction));
     }
 }
