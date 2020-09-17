@@ -93,7 +93,7 @@
                                     </thead>
                                     <tbody>
                                         <tr th:each="order, iStat : ${buyOrders}" th:object="${order}">
-                                            <td><a class="btn btn-danger btn-sm" th:href="@{/deleteOrder(id=${order.id})}">Delete</a></td>
+                                            <td><a class="btn btn-danger btn-sm" th:href="@{/deleteorder(id=${order.id})}">Delete</a></td>
                                             <td><a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#editOrderForm" th:href="@{/editorder(id=${order.id})}">Edit</a></td>
                                             <td th:text="${#temporals.format(order.time, 'dd-MM-yyyy HH:mm:ss')}">Order Time</td>
                                             <td th:text="${order.size}">Order size</td>
@@ -129,7 +129,7 @@
                                             <td th:text="${order.size}">Order size</td>
                                             <td th:text="${#temporals.format(order.time, 'dd-MM-yyyy HH:mm:ss')}">Order Time</td>
                                             <td><a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#editOrderForm" th:href="@{/editorder(id=${order.id})}">Edit</a></td>
-                                            <td><a class="btn btn-danger btn-sm" th:href="@{/deleteOrder(id=${order.id})}">Delete</a></td>
+                                            <td><a class="btn btn-danger btn-sm" th:href="@{/deleteorder(id=${order.id})}">Delete</a></td>
                                         </tr>
                                     </tbody>
                                 </table>
