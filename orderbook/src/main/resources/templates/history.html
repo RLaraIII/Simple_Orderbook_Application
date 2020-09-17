@@ -64,18 +64,24 @@
                             <h3 class="text-center">Trade History for <span th:text="${symbol}"></span></h3>
                         </header>
                         <div class="card-body">
-                            <form class="form-inline mb-4 d-flex justify-content-end" action="tradehistory" method="GET">
-                                <div class="form-group">
-<!--                                    <label for="dateString" class="col-3 col-form-label">
-                                        Date</label>-->
-                                    <div class="col-9">
-                                        <input type="date" name="dateString" 
-                                               id="dateString" class="form-control"/>
+                            <div class=" mb-4 d-flex justify-content-between">
+                                <form>
+                                    <input type="hidden" name="symbol" th:value="${symbol}"/>
+                                    <button class="btn btn-primary btn-sm" th:formaction="@{/orderbook(symbol=${symbol})}">Orderbook for <span th:text="${symbol}"></span></button>
+                                </form>
+                                <form class="form-inline" action="tradehistory" method="GET">
+                                    <div class="form-group">
+                                        <!--                                    <label for="dateString" class="col-3 col-form-label">
+                                                                                Date</label>-->
+                                        <div class="col-9">
+                                            <input type="date" name="dateString" 
+                                                   id="dateString" class="form-control"/>
+                                        </div>
                                     </div>
-                                </div>
-                                <input type="hidden" name="symbol" th:value="${symbol}"/>
-                                <button type="submit" class="btn btn-primary btn-sm">Find for Date</button>
-                            </form>
+                                    <input type="hidden" name="symbol" th:value="${symbol}"/>
+                                    <button type="submit" class="btn btn-primary btn-sm">Find for Date</button>
+                                </form>
+                            </div>
                             <!-- Table for Orderbook -->
                             <table class="table">
                                 <caption>Trade History on <span th:text="${symbol}"></span></caption>
