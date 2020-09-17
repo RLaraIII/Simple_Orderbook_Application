@@ -27,6 +27,8 @@ public interface ServiceLayer {
 
     public List<Transaction> getAllTransactionsForSymbol(String symbol);
     
+    public List<Transaction> getTop5ByFinalDate();
+    
     public void deleteUnmatchedOrder(int orderId);
     
     public Transaction makeTransaction(Order buyOrder, Order sellOrder);

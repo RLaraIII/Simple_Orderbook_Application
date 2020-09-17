@@ -93,12 +93,13 @@
                                     <tbody>
                                         <tr th:each="order, iStat : ${buyOrders}" th:object="${order}">
 
-                                            <td><a class="btn btn-danger btn-sm" th:href="@{/deleteOrder(id=${order.id})}">Delete</a></td>
+                                            <td><a class="btn btn-danger btn-sm" 
+                                                   th:href="@{deleteorder(id=${order.id}, symbol=${symbol})}">Delete</a></td>
                                             <td th:text="${#temporals.format(order.time, 'dd-MM-yyyy HH:mm:ss')}">Order Time</td>
                                             <td th:text="${order.size}">Order size</td>
                                             <td th:text="${order.offerPrice}">Order bid</td>
                                             <td><a 
-                                                    th:href="@{matchorder(orderId=${order.id})}" 
+                                                    th:href="@{matchorder(orderId=${order.id}, symbol=${symbol})}" 
                                                     class="btn btn-success" 
                                                     th:style="${!iStat.first}? 'display: none;'">Match</a></td>
                                         </tr>
@@ -120,13 +121,13 @@
                                     <tbody>
                                         <tr th:each="order, iStat : ${sellOrders}" th:object="${order}">
                                             <td><a 
-                                                    th:href="@{matchorder(orderId=${order.id})}"  
+                                                    th:href="@{matchorder(orderId=${order.id}, symbol=${symbol})}"  
                                                     class="btn btn-success" 
                                                     th:style="${!iStat.first}? 'display: none;'">Match</a></td>
                                             <td th:text="${order.offerPrice}">Order Ask</td>
                                             <td th:text="${order.size}">Order size</td>
                                             <td th:text="${#temporals.format(order.time, 'dd-MM-yyyy HH:mm:ss')}">Order Time</td>
-                                            <td><a class="btn btn-danger btn-sm" th:href="@{/deleteOrder(id=${order.id})}">Delete</a></td>
+                                            <td><a class="btn btn-danger btn-sm" th:href="@{/deleteorder(id=${order.id}, symbol=${symbol})}">Delete</a></td>
                                         </tr>
                                     </tbody>
                                 </table>

@@ -38,6 +38,7 @@ public class MainController {
     @GetMapping("/")
     public String viewIndex(HttpServletRequest request, Model model) {
         model.addAttribute("symbols", service.getSymbols());
+        model.addAttribute("transactions", service.getTop5ByFinalDate());
 
         return "index";
     }
@@ -95,23 +96,22 @@ public class MainController {
 
         List<Transaction> transactions = service.getAllTransactionsForSymbol(symbol);
 
+        model.addAttribute("symbol", symbol);
         model.addAttribute("symbols", service.getSymbols());
         model.addAttribute("transactions", transactions);
         return "history";
     }
 
-    @GetMapping("/deleteOrder")
-    public String deleteOrder(HttpServletRequest request) {
-        int orderId = Integer.parseInt(request.getParameter("id"));
-        service.deleteUnmatchedOrder(orderId);
-        return "redirect:/orderbook";
+    @GetMapping("/deleteorder")
+    public String deleteOrder(Integer id, String symbol) {
+        service.deleteUnmatchedOrder(id);
+        return "redirect:/orderbook?symbol=" + symbol;
     }
 
     @GetMapping("matchorder")
-    public String matchOrder(Integer orderId) {
-        System.out.println(orderId);
+    public String matchOrder(Integer orderId, String symbol) {
         service.matchOrders(orderId);
-        return "redirect:/orderbook";
+        return "redirect:/orderbook?symbol=" + symbol;
     }
 
     @PostMapping("createorder")

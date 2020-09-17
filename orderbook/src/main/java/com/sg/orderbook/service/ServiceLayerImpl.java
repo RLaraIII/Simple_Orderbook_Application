@@ -179,4 +179,9 @@ public class ServiceLayerImpl implements ServiceLayer {
     public void addOrder(Order newOrder) {
         orders.save(newOrder);
     }
+
+    @Override
+    public List<Transaction> getTop5ByFinalDate() {
+        return transactions.findTop5ByOrderByFinalTimeDesc();
+    }
 }

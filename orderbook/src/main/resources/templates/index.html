@@ -58,7 +58,7 @@
         <!-- Main Body -->
         <div class="container-fluid">
             <div class="row m-4 d-flex justify-content-center">
-                <div class="col-8">
+                <div class="col-md-7">
                     <main class="card rounded-0">
                         <header class="card-header">
                             <h3 class="text-center">Symbol Activity</h3>
@@ -88,6 +88,30 @@
                             </div>
                         </div>
                     </main>
+                </div>
+                <div class="col-md-5 card rounded-0">
+                    <div class="card-body">
+                        <h5 class="card-title">Latest Trades</h5>
+                        <hr />
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="font-weight-bold">Symbol</th>
+                                    <th scope="col" class="font-weight-bold">Timestamp</th>
+                                    <th scope="col" class="font-weight-bold">Price</th>
+                                    <th scope="col" class="font-weight-bold">Size</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="transaction : ${transactions}" th:object="${transaction}">
+                                    <td th:text="${transaction.finalSymbol}">Transaction Symbol</td>
+                                    <td th:text="${#temporals.format(transaction.finalTime, 'dd-MM-yyyy HH:mm:ss')}">Transaction Time</td>
+                                    <td th:text="${transaction.finalPrice}">Transaction Price</td>
+                                    <td th:text="${transaction.amount}">Transaction Size</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

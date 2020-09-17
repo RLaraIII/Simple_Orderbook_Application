@@ -61,15 +61,15 @@
                 <div class="col-8">
                     <main class="card rounded-0">
                         <header class="card-header">
-                            <h3 class="text-center">Trade History</h3>
+                            <h3 class="text-center">Trade History for <span th:text="${symbol}"></span></h3>
                         </header>
                         <div class="card-body">
                             <!-- Table for Orderbook -->
                             <table class="table">
-                                <caption>Trade History on Orderbook</caption>
+                                <caption>Trade History on <span th:text="${symbol}"></span></caption>
                                 <thead>
                                     <tr>
-                                        <th scope="col" class="font-weight-bold">Symbol</th>
+<!--                                        <th scope="col" class="font-weight-bold">Symbol</th>-->
                                         <th scope="col" class="font-weight-bold">Timestamp</th>
                                         <th scope="col" class="font-weight-bold">Price</th>
                                         <th scope="col" class="font-weight-bold">Size</th>
@@ -78,14 +78,8 @@
 
                                 <!-- Entries -->
                                 <tbody>
-                                    <!--                                    <tr>
-                                                                            <th scope="row" class="font-weight-bold">GOOG</td>
-                                                                            <td>2020-01-01 12:00:00</td>
-                                                                            <td>$300.00</td>
-                                                                            <td>100</td>
-                                                                        </tr>-->
                                     <tr th:each="transaction : ${transactions}" th:object="${transaction}">
-                                        <td th:text="${transaction.finalSymbol}">Transaction Symbol</td>
+                                        <!--<td th:text="${transaction.finalSymbol}">Transaction Symbol</td>-->
                                         <td th:text="${#temporals.format(transaction.finalTime, 'dd-MM-yyyy HH:mm:ss')}">Transaction Time</td>
                                         <td th:text="${transaction.finalPrice}">Transaction Price</td>
                                         <td th:text="${transaction.amount}">Transaction Size</td>

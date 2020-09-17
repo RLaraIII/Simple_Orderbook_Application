@@ -28,4 +28,5 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
     @Query("SELECT t FROM Transaction t WHERE t.buyOrder = :order OR t.sellOrder = :order")
     List findAllTransactionsForOrder(@Param("order") Order order);
     
+    List findTop5ByOrderByFinalTimeDesc();
 }
