@@ -78,7 +78,7 @@
                             <label for="amount" class="col-3 col-form-label">
                                 Amount</label>
                             <div class="col-9">
-                                <input type="text" name="amount" id="amount" 
+                                <input required type="number" min="1" step="0.01" name="amount" id="amount" 
                                        class="form-control" th:value="${order.offerPrice}"/>
                             </div>
                         </div>
@@ -86,7 +86,7 @@
                             <label for="size" class="col-3 col-form-label">
                                 Size </label>
                             <div class="col-9">
-                                <input type="text" name="size" id="size" 
+                                <input required type="number" min="1" step="1" name="size" id="size" 
                                        class="form-control"  th:value="${order.size}"/>
                             </div>
                         </div> 
