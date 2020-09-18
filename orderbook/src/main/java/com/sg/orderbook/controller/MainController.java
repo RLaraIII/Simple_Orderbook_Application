@@ -96,7 +96,7 @@ public class MainController {
 
         service.createOrderbook(symbol);
 
-        return "redirect:/orderbook?symbol=" + symbol;
+        return symbol.isEmpty() ? "redirect:/" : "redirect:/orderbook?symbol=" + symbol;
     }
 
     @GetMapping("/tradehistory")
