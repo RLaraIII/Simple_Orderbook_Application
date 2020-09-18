@@ -64,19 +64,26 @@
                             <h3 class="text-center">Orderbook for <span th:text="${symbol}">[SYMBOL]</span> </h3>
                         </header>
                         <!-- Table for Orderbook -->
+                        <div class="row">
+                            <form style="text-align:center" class="col-md-10 mx-auto mt-2 mb-0 text-center p-0" th:unless="${message.equals('')}">
+                                <div class="form-group text-center">
+                                    <div class="text-center">
+                                        <div type="message" readonly class="text-center alert alert-success" id="message" placeholder="Message" th:text="${message}"></div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                         <div class="row ">
                             <div class="col text-center m-3 p-0">
                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#buyOrderForm">
                                     Create a Buy Order
                                 </button>
                             </div>
-                            <form style="text-align:center" class="col text-center m-3 p-0">
-                                <div class="form-group row text-center">
-                                    <div class="col-sm text-center">
-                                        <input type="message" readonly class="form-control text-center" id="message" placeholder="Message" th:value="${message}">
-                                    </div>
-                                </div>
+                            <form class="col text-center m-3 p-0">
+                                <input type="hidden" name="symbol" th:value="${symbol}"/>
+                                <button class="btn btn-primary" th:formaction="@{/tradehistory(symbol=${symbol})}">Trade History for <span th:text="${symbol}"></span></button>
                             </form>
+
                             <div class="col text-center m-3 p-0">
                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sellOrderForm">
                                     Create a Sell Order
@@ -141,6 +148,10 @@
                                     </tbody>
                                 </table>
                             </div>
+                        </div>
+                        <div class="d-flex justify-content-end my-4 mr-4">
+
+                        </div>
                     </main>
                 </div>
             </div>
