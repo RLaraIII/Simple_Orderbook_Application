@@ -61,7 +61,7 @@ public class MainController {
             message += "Order Successfully Edited!";
         }
 
-        if (symbol == null) {
+        if (symbol == null || symbol.isEmpty()) {
             return "redirect:/";
         }
 
@@ -104,7 +104,7 @@ public class MainController {
         String symbol = request.getParameter("symbol").toUpperCase();
         String dateString = request.getParameter("dateString");
 
-        if (symbol == null) {
+        if (symbol == null || symbol.isEmpty()) {
             return "redirect:/";
         } else if (!service.getSymbols().contains(symbol)) {
             return "redirect:/symbolnotfound?symbol=" + symbol;
@@ -112,7 +112,7 @@ public class MainController {
 
         List<Transaction> transactions = new ArrayList<>();
 
-        if (dateString == null || dateString.isBlank()) {
+        if (dateString == null || dateString.isEmpty()) {
             transactions = service.getAllTransactionsForSymbol(symbol);
         } else {
             transactions = service.getAllTransactionsForSymbolAndDate(symbol, LocalDate.parse(dateString));
