@@ -49,7 +49,7 @@
 
                 </ul>
                 <form class="form-inline my-2 my-lg-0" action="orderbook">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="symbol">
+                    <input class="form-control mr-sm-2" type="search" pattern="[a-zA-Z]{1,45}" oninvalid="this.setCustomValidity('Input must be letters in length between 1-45.')" placeholder="Search" aria-label="Search" name="symbol">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search a Symbol</button>
                 </form>
             </div>
@@ -175,7 +175,7 @@
                                         <label for="offerPrice" class="col-3 col-form-label">
                                             Price</label>
                                         <div class="col-9">
-                                            <input required type="number" min="0.01" step="0.01"name="offerPrice" 
+                                            <input required type="number" min="0.01" max="99999999.99" step="0.01"name="offerPrice" 
                                                    id="offerPrice" class="form-control"/>
                                         </div>
                                     </div>
@@ -183,7 +183,7 @@
                                         <label for="size" class="col-3 col-form-label">
                                             Amount</label>
                                         <div class="col-9">
-                                            <input required type="number" min="1" step="1" name="size" 
+                                            <input required type="number" min="1" max="1000000" step="1" name="size" 
                                                    id="size" class="form-control"/>
                                         </div>
                                     </div>
@@ -220,7 +220,7 @@
                                         <label for="offerPrice" class="col-3 col-form-label">
                                             Price</label>
                                         <div class="col-9">
-                                            <input required type="number" min="0.01" step="0.01" name="offerPrice" 
+                                            <input required type="number" min="0.01" max="99999999.99" step="0.01" name="offerPrice" 
                                                    id="offerPrice" class="form-control"/>
                                         </div>
                                     </div>
@@ -228,7 +228,7 @@
                                         <label for="size" class="col-3 col-form-label">
                                             Amount</label>
                                         <div class="col-9">
-                                            <input required type="number" min="1" step="1" name="size" 
+                                            <input required type="number" min="1" max="1000000" step="1" name="size" 
                                                    id="size" class="form-control"/>
                                         </div>
                                     </div>
