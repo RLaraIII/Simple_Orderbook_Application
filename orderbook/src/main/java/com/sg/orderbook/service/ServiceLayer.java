@@ -52,4 +52,6 @@ public interface ServiceLayer {
     public void incrementBuyOrders(String tick, String symbol);
     
     public void decrementSellOrders(String tick, String symbol);
+    
+    public String stringifyTransactionData(String symbol);
 }

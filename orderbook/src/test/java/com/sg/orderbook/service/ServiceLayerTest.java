@@ -616,7 +616,7 @@ public class ServiceLayerTest {
         BigDecimal firstOriginalPrice = firstBuyOrder.getOfferPrice();
         BigDecimal secondOriginalPrice = secondBuyOrder.getOfferPrice();
         BigDecimal thirdOriginalPrice = thirdBuyOrder.getOfferPrice();
-        
+
         String tick = "0.01";
 
         service.incrementBuyOrders(tick, firstBuyOrder.getSymbol());
@@ -668,7 +668,7 @@ public class ServiceLayerTest {
         BigDecimal firstOriginalPrice = firstSellOrder.getOfferPrice();
         BigDecimal secondOriginalPrice = secondSellOrder.getOfferPrice();
         BigDecimal thirdOriginalPrice = thirdSellOrder.getOfferPrice();
-        
+
         String tick = "0.01";
 
         service.decrementSellOrders(tick, firstSellOrder.getSymbol());
@@ -679,5 +679,91 @@ public class ServiceLayerTest {
         assertEquals(secondOriginalPrice.subtract(new BigDecimal(tick)), secondSellOrder.getOfferPrice());
         assertNotEquals(thirdOriginalPrice, thirdSellOrder.getOfferPrice());
         assertEquals(thirdOriginalPrice.subtract(new BigDecimal(tick)), thirdSellOrder.getOfferPrice());
+    }
+
+    @Test
+    public void testStringifyTransactionData() {
+        List<Transaction> transactionsList = service.getAllTransactionsForSymbol("GOOG");
+
+        //        BUY ORDERS
+        Order firstBuyOrder = new Order();
+
+        firstBuyOrder.setActive(true);
+        firstBuyOrder.setOfferPrice(new BigDecimal("576.52").setScale(2, RoundingMode.HALF_UP));
+        firstBuyOrder.setSide(true);
+        firstBuyOrder.setSize(10);
+        firstBuyOrder.setSymbol("GOOG");
+        firstBuyOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
+
+        firstBuyOrder = orders.save(firstBuyOrder);
+
+        Order secondBuyOrder = new Order();
+
+        secondBuyOrder.setActive(true);
+        secondBuyOrder.setOfferPrice(new BigDecimal("576.40").setScale(2, RoundingMode.HALF_UP));
+        secondBuyOrder.setSide(true);
+        secondBuyOrder.setSize(10);
+        secondBuyOrder.setSymbol("GOOG");
+        secondBuyOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
+
+        secondBuyOrder = orders.save(secondBuyOrder);
+
+        Order thirdBuyOrder = new Order();
+
+        thirdBuyOrder.setActive(true);
+        thirdBuyOrder.setOfferPrice(new BigDecimal("576.37").setScale(2, RoundingMode.HALF_UP));
+        thirdBuyOrder.setSide(true);
+        thirdBuyOrder.setSize(10);
+        thirdBuyOrder.setSymbol("GOOG");
+        thirdBuyOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
+
+        thirdBuyOrder = orders.save(thirdBuyOrder);
+
+//        SELL ORDERS
+        Order firstSellOrder = new Order();
+
+        firstSellOrder.setActive(true);
+        firstSellOrder.setOfferPrice(new BigDecimal("576.42").setScale(2, RoundingMode.HALF_UP));
+        firstSellOrder.setSide(false);
+        firstSellOrder.setSize(10);
+        firstSellOrder.setSymbol("GOOG");
+        firstSellOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
+
+        firstSellOrder = orders.save(firstSellOrder);
+
+        Order secondSellOrder = new Order();
+
+        secondSellOrder.setActive(true);
+        secondSellOrder.setOfferPrice(new BigDecimal("576.58").setScale(2, RoundingMode.HALF_UP));
+        secondSellOrder.setSide(false);
+        secondSellOrder.setSize(10);
+        secondSellOrder.setSymbol("GOOG");
+        secondSellOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
+
+        secondSellOrder = orders.save(secondSellOrder);
+
+        Order thirdSellOrder = new Order();
+
+        thirdSellOrder.setActive(true);
+        thirdSellOrder.setOfferPrice(new BigDecimal("576.67").setScale(2, RoundingMode.HALF_UP));
+        thirdSellOrder.setSide(false);
+        thirdSellOrder.setSize(10);
+        thirdSellOrder.setSymbol("GOOG");
+        thirdSellOrder.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
+
+        thirdSellOrder = orders.save(thirdBuyOrder);
+
+        service.findPotentialTransactions(firstBuyOrder.getSymbol());
+        List<Transaction> transactionsForGoog = transactions.findByFinalSymbolOrderByFinalTimeDesc(firstBuyOrder.getSymbol());
+        String expectedFinalTime = transactionsForGoog.get(0).getFinalTime().toString();
+        String expectedFinalPrice = transactionsForGoog.get(0).getFinalPrice().toString();
+        
+        String stringified = service.stringifyTransactionData(transactionsForGoog.get(0).getFinalSymbol());
+        String expectedResult = "[{\"x\": \"" 
+                + expectedFinalTime 
+                + "\", \"y\": \"" 
+                + expectedFinalPrice + "\"}]";
+        
+        assertEquals(expectedResult, stringified);
     }
 }

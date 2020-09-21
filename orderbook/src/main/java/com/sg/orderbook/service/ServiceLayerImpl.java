@@ -213,7 +213,52 @@ public class ServiceLayerImpl implements ServiceLayer {
     }
 
     @Override
-    public Order getOrderById(int orderId) {        
+    public Order getOrderById(int orderId) {
         return orders.findById(orderId).orElse(null);
+    }
+
+    @Override
+    public String stringifyTransactionData(String symbol) {
+        List<Transaction> transactionsList = getAllTransactionsForSymbol(symbol);
+
+        String result = "[";
+
+        if (transactionsList.size() > 1) {
+            for (int i = 0; i < (transactionsList.size() - 1); i++) {
+                result += "{";
+                result += "\"";
+                result += "x\": \"";
+                result += transactionsList.get(i).getFinalTime().toString();
+                result += "\", ";
+                result += "\"";
+                result += "y\": ";
+                result += transactionsList.get(i).getFinalPrice().toString();
+                result += "}, ";
+            }
+
+            result += "{";
+            result += "\"";
+            result += "x\": \"";
+            result += transactionsList.get(transactionsList.size() - 1).getFinalTime().toString();
+            result += "\", ";
+            result += "\"";
+            result += "y\": ";
+            result += transactionsList.get(transactionsList.size() - 1).getFinalPrice().toString();
+            result += "}";
+        } else if (transactionsList.size() == 1) {
+            result += "{";
+            result += "\"";
+            result += "x\": \"";
+            result += transactionsList.get(0).getFinalTime().toString();
+            result += "\", ";
+            result += "\"";
+            result += "y\": ";
+            result += transactionsList.get(0).getFinalPrice().toString();
+            result += "}";
+        }
+
+        result += "]";
+
+        return result;
     }
 }

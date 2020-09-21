@@ -121,6 +121,7 @@ public class MainController {
         model.addAttribute("symbol", symbol);
         model.addAttribute("symbols", service.getSymbols());
         model.addAttribute("transactions", transactions);
+        model.addAttribute("tData", service.stringifyTransactionData(symbol));
         return "history";
     }
 

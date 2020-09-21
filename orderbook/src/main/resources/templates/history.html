@@ -104,6 +104,8 @@
                                 </tbody>
                             </table>
                         </div>
+                        <hr />
+                        <canvas id="myChart"></canvas>
                     </main>
                 </div>
             </div>
@@ -120,6 +122,94 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
                 integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
         crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.28.0/moment.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+        <script th:inline="javascript">
+            const rawData = JSON.parse(/*[[${tData}]]*/);
+            console.log("rawData is", rawData);
+            const datedData = rawData.map(d => {
+                d.x = new Date(d.x)
+            });
+            console.log("datedData is", datedData);
+//
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                            label: 'Demo',
+                            data: rawData,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255,99,132,1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                },
+                options: {
+                    scales: {
+                        xAxes: [{
+                                type: 'time',
+                                time: {
+                                    displayFormats: "day",
+                                    parser: "YYYY-MM-DDTHH:mm:ss",
+                                    tooltipFormat: 'll'
+                                },
+                            }]
+                    }
+                }
+            });
+//            var myLineChart = new Chart(ctx, {
+//                type: 'line',
+//                data: dataset,
+//                options: {
+//                    responsive: true,
+//                    title: {
+//                        display: true,
+//                        text: "Chart.js Time Scale"
+//                    },
+//                    scales: {
+//                        xAxes: [{
+////                                type: "time",
+////                                time: {
+////                                    displayFormats: "day",
+////                                    parser: "YYYY-MM-DDTHH:mm:ss",
+//////                                    tooltipFormat: 'll'
+////                                },
+//                                scaleLabel: {
+//                                    display: true,
+//                                    labelString: 'Date and Time'
+//                                }
+//                            }],
+//                        yAxes: [{
+//                                ticks: {
+//                                    beginAtZero: true,
+//                                    min: 400,
+//                                    max: 600,
+//                                },
+//                                scaleLabel: {
+//                                    display: true,
+//                                    labelString: 'Price in USD'
+//                                }
+//                            }]
+//                    }
+//                }
+//            });
+
+        </script>
     </body>
 
 </html>
