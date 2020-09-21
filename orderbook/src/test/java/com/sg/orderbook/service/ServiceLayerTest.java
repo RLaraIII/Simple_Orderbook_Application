@@ -766,4 +766,28 @@ public class ServiceLayerTest {
         
         assertEquals(expectedResult, stringified);
     }
+    
+    @Test
+    public void testGenerateRandomOrders() {
+        Order order = new Order();
+        
+        order.setActive(true);
+        order.setOfferPrice(new BigDecimal("100").setScale(2, RoundingMode.HALF_UP));
+        order.setSide(true);
+        order.setSize(10);
+        order.setSymbol("APPL");
+        order.setTime(LocalDateTime.parse("2020-01-01T12:00:00"));
+        
+        orders.save(order);
+        
+        service.generateRandomOrders(1);
+        
+        List<Order> buyOrderList = service.getAllBuyOrdersForSymbol(order.getSymbol());
+        List<Order> sellOrderList = service.getAllSellOrdersForSymbol(order.getSymbol());
+        
+        assertEquals(2, buyOrderList.size());
+        assertEquals(1, sellOrderList.size());
+        
+    }
+    
 }

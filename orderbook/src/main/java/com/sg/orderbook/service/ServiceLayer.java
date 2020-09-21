@@ -54,4 +54,8 @@ public interface ServiceLayer {
     public void decrementSellOrders(String tick, String symbol);
     
     public String stringifyTransactionData(String symbol);
+    
+    public void generateRandomOrders(int numOfOrders);
+    
+    public void checkForTransactions();
 }

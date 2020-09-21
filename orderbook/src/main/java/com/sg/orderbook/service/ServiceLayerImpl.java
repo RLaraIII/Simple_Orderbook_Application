@@ -9,10 +9,11 @@ import com.sg.orderbook.entities.Order;
 import com.sg.orderbook.entities.Transaction;
 import com.sg.orderbook.repositories.*;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
+import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -260,5 +261,50 @@ public class ServiceLayerImpl implements ServiceLayer {
         result += "]";
 
         return result;
+    }
+    
+    public void generateRandomOrders(int numOfOrders) {
+        Random rand = new Random();
+        Order newOrder;
+
+        List<String> symbols = getSymbols();
+
+        for (String symbol : symbols) {
+
+            for (int currentNum = 0; currentNum < numOfOrders; currentNum += 1) {
+                newOrder = new Order();
+                
+                newOrder.setTime(LocalDateTime.now().minusSeconds(rand.nextInt(60 - 1) + 1));
+                newOrder.setActive(true);
+                newOrder.setOfferPrice(new BigDecimal(BigInteger.valueOf(rand.nextInt(50000 - 100) + 100), 2));
+                newOrder.setSide(true);
+                newOrder.setSize(rand.nextInt(500 - 1) + 1);
+                newOrder.setSymbol(symbol);
+                
+                orders.save(newOrder);
+            }
+            
+            for (int currentNum = 0; currentNum < numOfOrders; currentNum += 1) {
+                newOrder = new Order();
+                
+                newOrder.setTime(LocalDateTime.now().minusSeconds(rand.nextInt(60 - 1) + 1));
+                newOrder.setActive(true);
+                newOrder.setOfferPrice(new BigDecimal(BigInteger.valueOf(rand.nextInt(50000 - 100) + 100), 2));
+                newOrder.setSide(false);
+                newOrder.setSize(rand.nextInt(500 - 1) + 1);
+                newOrder.setSymbol(symbol);
+                
+                orders.save(newOrder);
+            }
+        }
+    }
+
+    @Override
+    public void checkForTransactions() {
+        List<String> symbols = getSymbols();
+
+        for (String symbol : symbols) {
+            findPotentialTransactions(symbol);
+        }
     }
 }
