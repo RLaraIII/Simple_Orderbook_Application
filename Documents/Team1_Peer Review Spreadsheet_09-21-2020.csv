@@ -1,0 +1,23 @@
+,Peer Review Spreadsheet,
+,,
+Project:,Order Book,
+Date:,21-Sep,
+Artifact:,,
+Reviewers:,"Carlos, Minul, Ramon, and Jihan",
+# Bugs:,3,
+,,
+Issue#,Issue Description,Status
+1,No 404 handling,Fixed
+2,Creation of empty/null orders,Fixed
+3,Creation of empty/null orderbooks,Fixed
+4,,
+5,,
+6,,
+7,,
+8,,
+9,,
+10,,
+,,
+Status Key:,Fixed (fixed within 24 hours; no need to enter in defect list),
+,Not Fixed (must enter in project defect list for fix after 24 hours),
+,"Not a Bug (false alarm, new feature request, etc.)",
