@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -66,7 +67,7 @@ public class MainController {
         }
 
         if (service.getSymbols().contains(symbol)) {
-            service.findPotentialTransactions(symbol);
+            //service.findPotentialTransactions(symbol);
         } else {
             return "redirect:/symbolnotfound?symbol=" + symbol;
         }
@@ -177,5 +178,11 @@ public class MainController {
         service.addOrder(order);
         
         return "redirect:/orderbook?symbol=" + order.getSymbol() + "&message=4";
+    }
+    
+    @Scheduled(fixedRate = 30000) 
+    public void generateRandomOrders() {
+        service.generateRandomOrders(5);
+        service.checkForTransactions();
     }
 }
