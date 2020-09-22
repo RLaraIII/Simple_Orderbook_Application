@@ -69,10 +69,16 @@
                                     <input type="hidden" name="symbol" th:value="${symbol}"/>
                                     <button class="btn btn-primary btn-sm" th:formaction="@{/orderbook(symbol=${symbol})}">Orderbook for <span th:text="${symbol}"></span></button>
                                 </form>
+
+                                <!-- Button trigger modal -->
+                                <form>
+                                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#chartInfo">
+                                        View Charts
+                                    </button>
+                                </form>
+
                                 <form class="form-inline" action="tradehistory" method="GET">
                                     <div class="form-group">
-                                        <!--                                    <label for="dateString" class="col-3 col-form-label">
-                                                                                Date</label>-->
                                         <div class="col-9">
                                             <input type="date" name="dateString" 
                                                    id="dateString" class="form-control"/>
@@ -105,8 +111,28 @@
                             </table>
                         </div>
                         <hr />
-                        <canvas id="myChart"></canvas>
+                        
                     </main>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="chartInfo" tabindex="-1" aria-labelledby="chartInfo" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="chartInfoLabel">Chart info for <span th:text="${symbol}"></span></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -127,18 +153,17 @@
         <script th:inline="javascript">
             const rawData = JSON.parse(/*[[${tData}]]*/);
             console.log("rawData is", rawData);
-            const datedData = rawData.map(d => {
-                d.x = new Date(d.x)
-            });
-            console.log("datedData is", datedData);
-//
+//            const datedData = rawData.map(d => d.x = new Date(d.x));
+//            console.log("datedData is", datedData);
+
             var ctx = document.getElementById('myChart').getContext('2d');
             var myChart = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: [],
                     datasets: [{
-                            label: 'Demo',
+                            label: 'Price History',
+                            lineTension: 0,
                             data: rawData,
                             backgroundColor: [
                                 'rgba(255, 99, 132, 0.2)',
@@ -168,46 +193,13 @@
                                     parser: "YYYY-MM-DDTHH:mm:ss",
                                     tooltipFormat: 'll'
                                 },
-                            }]
+                            }],
+                        yAxes: [
+
+                        ]
                     }
                 }
             });
-//            var myLineChart = new Chart(ctx, {
-//                type: 'line',
-//                data: dataset,
-//                options: {
-//                    responsive: true,
-//                    title: {
-//                        display: true,
-//                        text: "Chart.js Time Scale"
-//                    },
-//                    scales: {
-//                        xAxes: [{
-////                                type: "time",
-////                                time: {
-////                                    displayFormats: "day",
-////                                    parser: "YYYY-MM-DDTHH:mm:ss",
-//////                                    tooltipFormat: 'll'
-////                                },
-//                                scaleLabel: {
-//                                    display: true,
-//                                    labelString: 'Date and Time'
-//                                }
-//                            }],
-//                        yAxes: [{
-//                                ticks: {
-//                                    beginAtZero: true,
-//                                    min: 400,
-//                                    max: 600,
-//                                },
-//                                scaleLabel: {
-//                                    display: true,
-//                                    labelString: 'Price in USD'
-//                                }
-//                            }]
-//                    }
-//                }
-//            });
 
         </script>
     </body>
