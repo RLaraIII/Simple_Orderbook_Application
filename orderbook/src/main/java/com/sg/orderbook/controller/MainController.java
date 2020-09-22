@@ -184,6 +184,10 @@ public class MainController {
     @Scheduled(fixedRate = 300000) 
     public void generateRandomOrders() {
         service.generateRandomOrders(5);
+    }
+    
+    @Scheduled(fixedRate = 3000) 
+    public void checkForTransactions() {
         service.checkForTransactions();
     }
 }

@@ -780,13 +780,25 @@ public class ServiceLayerTest {
         
         orders.save(order);
         
-        service.generateRandomOrders(1);
+        // Generate 10 random orders
+        
+        service.generateRandomOrders(10);
         
         List<Order> buyOrderList = service.getAllBuyOrdersForSymbol(order.getSymbol());
         List<Order> sellOrderList = service.getAllSellOrdersForSymbol(order.getSymbol());
         
-        assertEquals(2, buyOrderList.size());
-        assertEquals(1, sellOrderList.size());
+        assertEquals(11, buyOrderList.size());
+        assertEquals(10, sellOrderList.size());
+        
+        // More then 10 orders exist, there should be no orders added for buy and sell
+        
+        service.generateRandomOrders(10);
+        
+        buyOrderList = service.getAllBuyOrdersForSymbol(order.getSymbol());
+        sellOrderList = service.getAllSellOrdersForSymbol(order.getSymbol());
+        
+        assertEquals(11, buyOrderList.size());
+        assertEquals(10, sellOrderList.size());
         
     }
     

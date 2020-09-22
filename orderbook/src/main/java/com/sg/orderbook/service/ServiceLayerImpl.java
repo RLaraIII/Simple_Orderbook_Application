@@ -262,39 +262,49 @@ public class ServiceLayerImpl implements ServiceLayer {
 
         return result;
     }
-    
+
     public void generateRandomOrders(int numOfOrders) {
         Random rand = new Random();
         Order newOrder;
+        
+        int orderLimitSize = 10;
 
         List<String> symbols = getSymbols();
-
+        List<Order> orderList;
         for (String symbol : symbols) {
 
-            for (int currentNum = 0; currentNum < numOfOrders; currentNum += 1) {
-                newOrder = new Order();
-                
-                newOrder.setTime(LocalDateTime.now().minusSeconds(rand.nextInt(60 - 1) + 1));
-                newOrder.setActive(true);
-                newOrder.setOfferPrice(new BigDecimal(BigInteger.valueOf(rand.nextInt(50000 - 100) + 100), 2));
-                newOrder.setSide(true);
-                newOrder.setSize(rand.nextInt(500 - 1) + 1);
-                newOrder.setSymbol(symbol);
-                
-                orders.save(newOrder);
+            orderList = getAllBuyOrdersForSymbol(symbol);
+
+            if (orderList.size() < orderLimitSize) {
+                for (int currentNum = 0; currentNum < numOfOrders; currentNum += 1) {
+                    newOrder = new Order();
+
+                    newOrder.setTime(LocalDateTime.now().minusSeconds(rand.nextInt(60 - 1) + 1));
+                    newOrder.setActive(true);
+                    newOrder.setOfferPrice(new BigDecimal(BigInteger.valueOf(rand.nextInt(50000 - 100) + 100), 2));
+                    newOrder.setSide(true);
+                    newOrder.setSize(rand.nextInt(500 - 1) + 1);
+                    newOrder.setSymbol(symbol);
+
+                    orders.save(newOrder);
+                }
             }
-            
-            for (int currentNum = 0; currentNum < numOfOrders; currentNum += 1) {
-                newOrder = new Order();
-                
-                newOrder.setTime(LocalDateTime.now().minusSeconds(rand.nextInt(60 - 1) + 1));
-                newOrder.setActive(true);
-                newOrder.setOfferPrice(new BigDecimal(BigInteger.valueOf(rand.nextInt(50000 - 100) + 100), 2));
-                newOrder.setSide(false);
-                newOrder.setSize(rand.nextInt(500 - 1) + 1);
-                newOrder.setSymbol(symbol);
-                
-                orders.save(newOrder);
+
+            orderList = getAllSellOrdersForSymbol(symbol);
+
+            if (orderList.size() < orderLimitSize) {
+                for (int currentNum = 0; currentNum < numOfOrders; currentNum += 1) {
+                    newOrder = new Order();
+
+                    newOrder.setTime(LocalDateTime.now().minusSeconds(rand.nextInt(60 - 1) + 1));
+                    newOrder.setActive(true);
+                    newOrder.setOfferPrice(new BigDecimal(BigInteger.valueOf(rand.nextInt(50000 - 100) + 100), 2));
+                    newOrder.setSide(false);
+                    newOrder.setSize(rand.nextInt(500 - 1) + 1);
+                    newOrder.setSymbol(symbol);
+
+                    orders.save(newOrder);
+                }
             }
         }
     }
