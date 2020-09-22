@@ -181,7 +181,7 @@ public class MainController {
         return "redirect:/orderbook?symbol=" + order.getSymbol() + "&message=4";
     }
     
-    @Scheduled(fixedRate = 30000) 
+    @Scheduled(fixedRate = 300000) 
     public void generateRandomOrders() {
         service.generateRandomOrders(5);
         service.checkForTransactions();
