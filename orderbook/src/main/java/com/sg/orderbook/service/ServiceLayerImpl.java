@@ -219,8 +219,7 @@ public class ServiceLayerImpl implements ServiceLayer {
     }
 
     @Override
-    public String stringifyTransactionData(String symbol) {
-        List<Transaction> transactionsList = getAllTransactionsForSymbol(symbol);
+    public String stringifyTransactionData(List<Transaction> transactionsList) {
 
         String result = "[";
 
@@ -266,7 +265,7 @@ public class ServiceLayerImpl implements ServiceLayer {
     public void generateRandomOrders(int numOfOrders) {
         Random rand = new Random();
         Order newOrder;
-        
+
         int orderLimitSize = 10;
 
         List<String> symbols = getSymbols();

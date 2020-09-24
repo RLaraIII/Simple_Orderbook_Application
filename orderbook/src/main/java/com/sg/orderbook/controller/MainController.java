@@ -122,7 +122,7 @@ public class MainController {
         model.addAttribute("symbol", symbol);
         model.addAttribute("symbols", service.getSymbols());
         model.addAttribute("transactions", transactions);
-        model.addAttribute("tData", service.stringifyTransactionData(symbol));
+        model.addAttribute("tData", service.stringifyTransactionData(transactions));
         return "history";
     }
 
