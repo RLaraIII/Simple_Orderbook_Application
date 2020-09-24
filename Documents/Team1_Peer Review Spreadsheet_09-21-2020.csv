@@ -1,16 +1,16 @@
 ,Peer Review Spreadsheet,
 ,,
 Project:,Order Book,
-Date:,21-Sep,
+Date:,24-Sep,
 Artifact:,,
 Reviewers:,"Carlos, Minul, Ramon, and Jihan",
-# Bugs:,3,
+# Bugs:,4,
 ,,
 Issue#,Issue Description,Status
 1,No 404 handling,Fixed
 2,Creation of empty/null orders,Fixed
 3,Creation of empty/null orderbooks,Fixed
-4,,
+4,New orders don't pair with other orders until refresh,Fixed
 5,,
 6,,
 7,,
