@@ -86,6 +86,7 @@ public class MainController {
     @GetMapping("/symbolnotfound")
     public String symbolNotFound(HttpServletRequest request, Model model) {
         String symbol = request.getParameter("symbol").toUpperCase();
+        if (symbol.isEmpty()) return "redirect:/";
         model.addAttribute("symbol", symbol);
         model.addAttribute("symbols", service.getSymbols());
         return "symbolnotfound";
