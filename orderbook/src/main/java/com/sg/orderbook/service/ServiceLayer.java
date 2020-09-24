@@ -17,10 +17,6 @@ import java.util.Optional;
  */
 @Component
 public interface ServiceLayer {
-//    public List<Order> getAllOrders();
-//    
-//    public List<Order> getAllActiveOrders();
-
     public List<Order> getAllBuyOrdersForSymbol(String symbol);
     
     public List<Order> getAllSellOrdersForSymbol(String symbol);

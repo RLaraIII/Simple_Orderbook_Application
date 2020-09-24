@@ -61,8 +61,6 @@ public class ServiceLayerImpl implements ServiceLayer {
     public Transaction makeTransaction(Order buyOrder, Order sellOrder) {
         // Create the time field for the new transaction w/ format that sql can handle
         LocalDateTime now = LocalDateTime.now();
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
-//        String formattedDateTime = now.format(formatter);
 
         // Create and fill a new transaction
         Transaction newTransaction = new Transaction();
