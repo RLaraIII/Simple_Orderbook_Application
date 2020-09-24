@@ -67,7 +67,7 @@ public class MainController {
         }
 
         if (service.getSymbols().contains(symbol)) {
-            //service.findPotentialTransactions(symbol);
+            service.findPotentialTransactions(symbol);
         } else {
             return "redirect:/symbolnotfound?symbol=" + symbol;
         }
