@@ -67,7 +67,7 @@ public class MainController {
         }
 
         if (service.getSymbols().contains(symbol)) {
-            //service.findPotentialTransactions(symbol);
+            service.findPotentialTransactions(symbol);
         } else {
             return "redirect:/symbolnotfound?symbol=" + symbol;
         }
@@ -166,7 +166,7 @@ public class MainController {
         model.addAttribute("order", order);
         model.addAttribute("symbols", service.getSymbols());
         
-        return "editorder";
+        return "redirect:/editorder";
     }
 
     @PostMapping("editorder")

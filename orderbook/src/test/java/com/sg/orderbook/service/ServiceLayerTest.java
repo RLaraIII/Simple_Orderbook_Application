@@ -54,7 +54,7 @@ public class ServiceLayerTest {
     private ServiceLayerImpl service;
 
     @Test
-    public void testGetAllOrders() {
+    public void testGetOrderById() {
         Order order = new Order();
 
         order.setActive(true);
