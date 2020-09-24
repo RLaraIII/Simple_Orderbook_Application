@@ -758,7 +758,7 @@ public class ServiceLayerTest {
         String expectedFinalTime = transactionsForGoog.get(0).getFinalTime().toString();
         String expectedFinalPrice = transactionsForGoog.get(0).getFinalPrice().toString();
         
-        String stringified = service.stringifyTransactionData(transactionsForGoog.get(0).getFinalSymbol());
+        String stringified = service.stringifyTransactionData(transactionsForGoog);
         String expectedResult = "[{\"x\": \"" 
                 + expectedFinalTime 
                 + "\", \"y\": " 
