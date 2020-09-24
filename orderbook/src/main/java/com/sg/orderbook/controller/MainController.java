@@ -166,7 +166,7 @@ public class MainController {
         model.addAttribute("order", order);
         model.addAttribute("symbols", service.getSymbols());
         
-        return "redirect:/editorder";
+        return "editorder";
     }
 
     @PostMapping("editorder")
